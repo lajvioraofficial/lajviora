@@ -463,6 +463,7 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
   };
   window.logout=async function(){await client.auth.signOut();localStorage.removeItem('lajvioraRole');open('auth')};
   async function boot(){
+    return;
     client=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit',storageKey:'lajviora_google_implicit_v1'}});
     try{
       const url=new URL(location.href);
