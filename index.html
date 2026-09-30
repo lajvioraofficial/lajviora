@@ -252,7 +252,7 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
     localStorage.setItem('lajvioraRole',role);await window.renderWorkspace(role);go(role==='creator'?'creatorWorkspace':'brandWorkspace');
   };
   window.logout=async function(){await client.auth.signOut();localStorage.removeItem('lajvioraRole');go('auth')};
-  async function init(){
+  async function init(){return;
     client=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}});
     const url=new URL(location.href);
     const err=url.searchParams.get('error_description')||url.searchParams.get('error');
@@ -414,7 +414,7 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
   };
   window.logout=async function(){await client.auth.signOut();localStorage.removeItem('lajvioraRole');open('auth')};
   async function boot(){
-    client=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}});
+    client=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,flowType:'implicit'}});
     const hash=location.hash;
     if(hash.includes('access_token=')){
       const p=new URLSearchParams(hash.slice(1));
