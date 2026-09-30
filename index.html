@@ -546,8 +546,8 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
     const name=val('signupName'),email=val('signupEmail').toLowerCase(),password=val('signupPassword');
     if(!name||!email||password.length<6){alert('Please complete your name, email and a 6+ character password.');return}
     const r=await authClient.auth.signUp({email,password,options:{data:{full_name:name,product:'LAJVIORA'},emailRedirectTo:SITE}});
-    if(typeof window.gtag==='function')window.gtag('event','sign_up',{method:'email'});
     if(r.error){alert('Account creation failed: '+r.error.message);return}
+    if(typeof window.gtag==='function')window.gtag('event','sign_up',{method:'email'});
     if(r.data?.session){toast('Account created','Your real LAJVIORA account is active. Choose Creator or Brand.');show('role')}
     else{toast('Check your email','Your account was created. Confirm your email, then sign in to finish setup.');show('login')}
   };
@@ -643,6 +643,226 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
     authClient.auth.onAuthStateChange(async(event,session)=>{if(event==='SIGNED_IN'&&session)await route(session.user);if(event==='SIGNED_OUT')show('auth')});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+<script>
+/* LAJVIORA real role dashboards: live Supabase profile, campaign, match, application and message data. */
+(function(){
+  const URL='https://rixawxkhxqodjfozztzl.supabase.co';
+  const KEY='sb_publishable_OSfiIkgy8XUcmVhnEDbOOA_dXEtjF7Z';
+  let dashClient=null;
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const txt=s=>String(s??'').trim();
+  const num=s=>Number(String(s??'').replace(/[^0-9.]/g,''))||0;
+  const low=s=>txt(s).toLowerCase();
+  const pick=(o,keys,fallback='')=>{
+    if(!o)return fallback;
+    for(const key of keys){
+      const k=Object.keys(o).find(x=>x.toLowerCase()===String(key).toLowerCase());
+      if(k!==undefined&&o[k]!==null&&o[k]!==undefined&&txt(o[k])!=='')return o[k];
+    }
+    return fallback;
+  };
+  const initials=s=>txt(s).split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'L';
+  const formatNum=n=>num(n).toLocaleString('en-IN');
+  const profileFields={
+    creator:['display_name','niche','social_url','followers','average_reach','audience_location','collaboration_type','typical_rate','portfolio'],
+    brand:['brand_name','industry','website_or_social','contact_name','typical_budget','creator_niche','preferred_creator_reach','campaign_goal','campaign_brief']
+  };
+  const fieldValue=(role,d,k)=>{
+    const map=role==='creator'
+      ?{display_name:['display_name'],niche:['niche'],social_url:['social_url'],followers:['followers'],average_reach:['average_reach'],audience_location:['audience_location'],collaboration_type:['collaboration_type'],typical_rate:['typical_rate'],portfolio:['portfolio']}
+      :{brand_name:['brand_name','name'],industry:['industry'],website_or_social:['website_or_social','website','social_url'],contact_name:['contact_name','contact'],typical_budget:['typical_budget','budget'],creator_niche:['creator_niche','niche'],preferred_creator_reach:['preferred_creator_reach','creator_reach','preferred_reach'],campaign_goal:['campaign_goal','goal'],campaign_brief:['campaign_brief','brief']};
+    return pick(d,map[k]||[k],'');
+  };
+  const completion=(role,d)=>{
+    const vals=profileFields[role].map(k=>fieldValue(role,d,k));
+    const filled=vals.filter(v=>txt(v)!==''&&!(typeof v==='number'&&v===0)).length;
+    return Math.round((filled/vals.length)*100);
+  };
+  const anyId=(row,keys,uid)=>keys.some(k=>low(pick(row,[k],''))===low(uid));
+  const safeRows=async(table,options={})=>{
+    try{
+      let q=dashClient.from(table).select('*').limit(options.limit||50);
+      if(options.eq)for(const [k,v] of Object.entries(options.eq))q=q.eq(k,v);
+      if(options.status)q=q.eq('status',options.status);
+      const r=await q;
+      return r.error?[]:(r.data||[]);
+    }catch{return[]}
+  };
+  const sortRecent=rows=>rows.sort((a,b)=>String(pick(b,['created_at','updated_at','sent_at','timestamp'],'')).localeCompare(String(pick(a,['created_at','updated_at','sent_at','timestamp'],''))));
+  const countOwned=async(table,keys,uid)=>{
+    for(const key of keys){
+      try{
+        const r=await dashClient.from(table).select('id',{count:'exact',head:true}).eq(key,uid);
+        if(!r.error)return r.count||0;
+      }catch{}
+    }
+    const rows=await safeRows(table,{limit:200});
+    return rows.filter(r=>anyId(r,keys,uid)).length;
+  };
+  const allCampaigns=async()=>sortRecent(await safeRows('campaigns',{limit:100}));
+  const campaignName=c=>txt(pick(c,['title','campaign_name','name','campaign_title'],'Untitled campaign'));
+  const campaignNiche=c=>txt(pick(c,['niche','creator_niche','category','industry','requirements','campaign_brief','brief'],''));
+  const campaignBudget=c=>txt(pick(c,['budget','typical_budget','campaign_budget','rate'],''));
+  const campaignStatus=c=>txt(pick(c,['status','state'],''));
+  const campaignBrief=c=>txt(pick(c,['description','campaign_brief','brief','requirements'],''));
+  const userLabel=(role,p,u)=>role==='creator'?txt(p.display_name||u.user_metadata?.full_name||u.email||'Creator'):txt(p.display_name||u.user_metadata?.full_name||u.email||'Brand');
+
+  function injectCss(){
+    if($('lajviora-real-dashboard-css'))return;
+    const s=document.createElement('style');
+    s.id='lajviora-real-dashboard-css';
+    s.textContent=String.raw`
+      .real-dash-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:22px}
+      .real-dash-kicker{font-size:10px;letter-spacing:2px;color:var(--accent);font-weight:850;text-transform:uppercase}
+      .real-dash-title{font-family:Georgia,serif;font-size:clamp(32px,4vw,48px);letter-spacing:-1.9px;margin:7px 0 6px}
+      .real-dash-sub{color:var(--muted);font-size:13px;line-height:1.7;max-width:760px;margin:0}
+      .real-dash-avatar{width:50px;height:50px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(145deg,#1b1915,#3a3024);color:#f0d7a7;font-weight:900;border:1px solid #c8ad7d;box-shadow:0 10px 24px rgba(44,35,24,.14)}
+      .real-live{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid #d8c9b2;border-radius:999px;background:#fffdf8;color:#7d613d;font-size:10px;font-weight:850;letter-spacing:.8px}
+      .real-live i{width:7px;height:7px;border-radius:50%;background:#7ca16b;display:block}
+      .real-grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}
+      .real-stat{padding:18px;border:1px solid #ded5c7;border-radius:18px;background:linear-gradient(145deg,#fffdf8,#f5eee2);box-shadow:0 10px 28px rgba(44,35,24,.05)}
+      .real-stat small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800}
+      .real-stat strong{display:block;font-family:Georgia,serif;font-size:26px;margin-top:7px}
+      .real-stat span{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+      .real-grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+      .real-card{border:1px solid #ded5c7;border-radius:22px;background:rgba(255,253,248,.88);padding:22px;box-shadow:0 13px 38px rgba(44,35,24,.055)}
+      .real-card h3{margin:0 0 5px;font-size:18px}
+      .real-card p{color:var(--muted);font-size:12px;line-height:1.7;margin:0}
+      .real-list{display:grid;gap:10px;margin-top:16px}
+      .real-row{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:13px 0;border-bottom:1px solid #ece4d8}
+      .real-row:last-child{border-bottom:0}
+      .real-row strong{font-size:13px}
+      .real-muted{color:var(--muted);font-size:11px;line-height:1.6}
+      .real-tag{display:inline-flex;padding:5px 8px;border-radius:999px;background:#efe6d9;border:1px solid #decfb9;color:#85653e;font-size:9px;font-weight:850;letter-spacing:.7px;text-transform:uppercase}
+      .real-profile{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:15px}
+      .real-field{padding:12px 13px;border-radius:14px;background:#f3ede3;border:1px solid #e6dccd}
+      .real-field small{display:block;color:#9a7540;font-size:9px;font-weight:850;letter-spacing:1px;text-transform:uppercase}
+      .real-field strong{display:block;margin-top:4px;font-size:12px;word-break:break-word}
+      .real-empty{padding:22px;border:1px dashed #d7c8b1;border-radius:16px;background:#faf6ef;color:var(--muted);font-size:12px;line-height:1.7}
+      .real-item{padding:14px 0;border-bottom:1px solid #ece4d8}
+      .real-item:last-child{border-bottom:0}
+      .real-item-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+      .real-item-title{font-weight:850;font-size:13px}
+      .real-item-meta{color:var(--muted);font-size:11px;line-height:1.6;margin-top:4px}
+      .real-help{margin-top:16px;padding:14px 15px;border-radius:15px;background:linear-gradient(145deg,#fffdf8,#efe6d8);border:1px solid #d9c8ae;display:flex;justify-content:space-between;gap:14px;align-items:center}
+      .real-help a{color:#86643b;font-size:12px;font-weight:800}
+      @media(max-width:900px){.real-grid4{grid-template-columns:1fr 1fr}.real-grid2{grid-template-columns:1fr}}
+      @media(max-width:640px){.real-grid4{grid-template-columns:1fr}.real-profile{grid-template-columns:1fr}.real-dash-head{flex-direction:column}}
+    `;
+    document.head.appendChild(s);
+  }
+
+  async function loadDashboardContext(role){
+    const u=(await dashClient.auth.getUser()).data?.user;
+    if(!u)return null;
+    const pr=await dashClient.from('profiles').select('*').eq('id',u.id).maybeSingle();
+    if(pr.error)return null;
+    const d=await dashClient.from(role==='creator'?'creator_profiles':'brand_profiles').select('*').eq('user_id',u.id).maybeSingle();
+    return {u,profile:pr.data||{},detail:d.error?{}:(d.data||{})};
+  }
+
+  function navHtml(role){
+    const tabs=role==='creator'
+      ?[['overview','Overview'],['profile','My Profile'],['matches','Matches'],['applications','Applications'],['messages','Messages'],['analytics','Analytics'],['settings','Settings']]
+      :[['overview','Overview'],['campaigns','Campaigns'],['creators','Find Creators'],['shortlist','Shortlist'],['applications','Applications'],['messages','Messages'],['analytics','Analytics'],['settings','Settings']];
+    return tabs.map(([key,label],i)=>'<button class="ws-btn'+(i===0?' active':'')+'" data-real-tab="'+key+'">'+label+'</button>').join('');
+  }
+
+  function profileCard(role,d){
+    const data=role==='creator'
+      ?[['Display name','display_name'],['Primary niche','niche'],['Social profile','social_url'],['Followers','followers'],['Average reach / views','average_reach'],['Audience location','audience_location'],['Collaboration type','collaboration_type'],['Typical rate','typical_rate'],['Portfolio','portfolio']]
+      :[['Brand name','brand_name'],['Industry','industry'],['Website / social','website_or_social'],['Business contact','contact_name'],['Typical budget','typical_budget'],['Creator niche needed','creator_niche'],['Preferred creator reach','preferred_creator_reach'],['Campaign goal','campaign_goal'],['Campaign brief','campaign_brief']];
+    return '<div class="real-profile">'+data.map(([label,key])=>{
+      let v=fieldValue(role,d,key);if(key==='followers'||key==='average_reach')v=v?formatNum(v):'0';if(key==='portfolio'||key==='campaign_brief')v=txt(v)||'Not added yet';return '<div class="real-field"><small>'+label+'</small><strong>'+esc(v||'Not set')+'</strong></div>';
+    }).join('')+'</div>';
+  }
+
+  async function messagesFor(uid){
+    const rows=sortRecent(await safeRows('messages',{limit:80}));
+    return rows.filter(r=>anyId(r,['sender_id','receiver_id','from_user_id','to_user_id','user_id','recipient_id','creator_id','brand_id'],uid)).slice(0,8);
+  }
+
+  async function realWsTab(role,tab,button){
+    injectCss();
+    const ctx=await loadDashboardContext(role);if(!ctx)return;
+    const main=$(role+'Main');if(!main)return;
+    const name=userLabel(role,ctx.profile,ctx.u),d=ctx.detail,email=ctx.u.email||'';
+    const strength=completion(role,d);
+    let html='';
+    if(role==='creator'){
+      const [matches,apps,connections,campaigns,messages]=await Promise.all([
+        countOwned('matches',['creator_id'],ctx.u.id),
+        countOwned('applications',['creator_id'],ctx.u.id),
+        countOwned('social_connections',['user_id'],ctx.u.id),
+        allCampaigns(),
+        messagesFor(ctx.u.id)
+      ]);
+      const liveCampaigns=campaigns.filter(c=>!campaignStatus(c)||low(campaignStatus(c))==='active').slice(0,8);
+      const myTokens=tokensFrom(fieldValue('creator',d,'niche'));
+      const relevant=liveCampaigns.filter(c=>{const s=low(campaignName(c)+' '+campaignNiche(c)+' '+campaignBrief(c));return !myTokens.length||myTokens.some(t=>s.includes(t))}).slice(0,5);
+      const appsRows=sortRecent((await safeRows('applications',{limit:100})).filter(r=>anyId(r,['creator_id'],ctx.u.id))).slice(0,6);
+      const matchRows=sortRecent((await safeRows('matches',{limit:100})).filter(r=>anyId(r,['creator_id'],ctx.u.id))).slice(0,6);
+      const sections={
+        overview:'<div class="real-dash-head"><div><div class="real-dash-kicker">CREATOR OVERVIEW</div><div class="real-dash-title">Welcome, '+esc(name)+'.</div><p class="real-dash-sub">Your workspace is generated from your authenticated account and the profile data stored in LAJVIORA.</p></div><div><div class="real-dash-avatar">'+esc(initials(name))+'</div><div class="real-live" style="margin-top:8px"><i></i> LIVE DATABASE</div></div></div><div class="real-grid4"><div class="real-stat"><small>Profile completion</small><strong>'+strength+'%</strong><span>Based on saved profile fields</span></div><div class="real-stat"><small>Live matches</small><strong>'+matches+'</strong><span>From matches table</span></div><div class="real-stat"><small>Applications</small><strong>'+apps+'</strong><span>Your submitted applications</span></div><div class="real-stat"><small>Followers entered</small><strong>'+formatNum(d.followers)+'</strong><span>Saved on your profile</span></div></div><div class="real-grid2"><div class="real-card"><h3>Relevant live opportunities</h3><p>Active campaigns are shown when their stored campaign text overlaps with your saved niche.</p><div class="real-list">'+(relevant.length?relevant.map(c=>'<div class="real-item"><div class="real-item-top"><div><div class="real-item-title">'+esc(campaignName(c))+'</div><div class="real-item-meta">'+esc(campaignNiche(c)||'Campaign details')+(campaignBudget(c)?' · '+esc(campaignBudget(c)):'')+'</div></div><span class="real-tag">ACTIVE</span></div></div>').join(''):'<div class="real-empty">No matching active campaigns are stored right now. Your dashboard will update automatically when real brand campaigns are added.</div>')+'</div></div><div class="real-card"><h3>Profile snapshot</h3><p>These are the exact creator details saved to your account.</p>'+profileCard('creator',d)+'</div></div>',
+        profile:'<div class="real-dash-head"><div><div class="real-dash-kicker">MY PROFILE</div><div class="real-dash-title">'+esc(name)+'</div><p class="real-dash-sub">Keep your creator information current so brands see accurate details.</p></div><div class="real-live"><i></i> '+strength+'% COMPLETE</div></div><div class="real-card"><h3>Saved creator details</h3>'+profileCard('creator',d)+'</div><div class="real-help"><div><strong>Need to update your profile?</strong><div class="real-muted">Use the profile onboarding fields and save again.</div></div><a href="mailto:lajvioraofficial@gmail.com?subject=LAJVIORA%20Profile%20Update">Contact support →</a></div>',
+        matches:'<div class="real-dash-head"><div><div class="real-dash-kicker">MATCHES</div><div class="real-dash-title">Your real matches</div><p class="real-dash-sub">Only rows linked to your creator account are shown.</p></div><div class="real-live"><i></i> '+matches+' RECORDS</div></div><div class="real-card"><div class="real-list">'+(matchRows.length?matchRows.map(r=>'<div class="real-item"><div class="real-item-top"><div><div class="real-item-title">'+esc(txt(pick(r,['title','campaign_name','match_title'],'Creator-brand match')))+'</div><div class="real-item-meta">Campaign '+esc(txt(pick(r,['campaign_id'],'not linked'))) +' · Brand '+esc(txt(pick(r,['brand_id'],'not linked')))+'</div></div><span class="real-tag">'+esc(txt(pick(r,['status','state'],'MATCHED'))||'MATCHED')+'</span></div></div>').join(''):'<div class="real-empty">No live matches are stored for this account yet.</div>')+'</div></div>',
+        applications:'<div class="real-dash-head"><div><div class="real-dash-kicker">APPLICATIONS</div><div class="real-dash-title">Your applications</div><p class="real-dash-sub">A live view of applications created from your creator account.</p></div><div class="real-live"><i></i> '+apps+' APPLICATIONS</div></div><div class="real-card"><div class="real-list">'+(appsRows.length?appsRows.map(r=>'<div class="real-item"><div class="real-item-top"><div><div class="real-item-title">'+esc(txt(pick(r,['campaign_name','campaign_title','title'],'Application')))+'</div><div class="real-item-meta">Campaign '+esc(txt(pick(r,['campaign_id'],'not linked'))) +' · Submitted '+esc(txt(pick(r,['created_at','submitted_at'],'date not stored')))+'</div></div><span class="real-tag">'+esc(txt(pick(r,['status','state'],'SUBMITTED'))||'SUBMITTED')+'</span></div></div>').join(''):'<div class="real-empty">No applications have been submitted yet.</div>')+'</div></div>',
+        messages:'<div class="real-dash-head"><div><div class="real-dash-kicker">MESSAGES</div><div class="real-dash-title">Your conversations</div><p class="real-dash-sub">Messages are loaded from the live messages table for your account.</p></div><div class="real-live"><i></i> '+messages.length+' RECENT</div></div><div class="real-card"><div class="real-list">'+(messages.length?messages.map(r=>'<div class="real-item"><div class="real-item-top"><div><div class="real-item-title">'+esc(txt(pick(r,['subject','title'],'Message')))+'</div><div class="real-item-meta">'+esc(txt(pick(r,['body','message','content'],'No message preview stored')))+'</div></div><span class="real-tag">'+esc(txt(pick(r,['status'],'MESSAGE'))||'MESSAGE')+'</span></div></div>').join(''):'<div class="real-empty">No messages are stored for this account yet.</div>')+'</div></div>',
+        analytics:'<div class="real-dash-head"><div><div class="real-dash-kicker">ANALYTICS</div><div class="real-dash-title">Your saved performance signals</div><p class="real-dash-sub">Only values actually stored in your profile or connected social records are shown.</p></div><div class="real-live"><i></i> NO FABRICATED METRICS</div></div><div class="real-grid4"><div class="real-stat"><small>Followers</small><strong>'+formatNum(d.followers)+'</strong><span>Profile value</span></div><div class="real-stat"><small>Average reach</small><strong>'+formatNum(d.average_reach)+'</strong><span>Profile value</span></div><div class="real-stat"><small>Social connections</small><strong>'+connections+'</strong><span>Rows linked to account</span></div><div class="real-stat"><small>Applications</small><strong>'+apps+'</strong><span>Live database count</span></div></div><div class="real-card"><h3>Verification status</h3><p>Reach, views and engagement are not invented. They will only appear here when an authorized social integration stores verified values.</p></div>',
+        settings:'<div class="real-dash-head"><div><div class="real-dash-kicker">SETTINGS</div><div class="real-dash-title">Account settings</div><p class="real-dash-sub">Authenticated LAJVIORA account information.</p></div></div><div class="real-card">'+profileCard('creator',d)+'<div class="real-list"><div class="real-row"><strong>Email</strong><span class="real-muted">'+esc(email)+'</span></div><div class="real-row"><strong>Role</strong><span class="real-muted">Creator</span></div><div class="real-row"><strong>Authentication</strong><span class="real-muted">Supabase Auth</span></div><div class="real-row"><strong>Profile status</strong><span class="real-muted">'+strength+'% complete</span></div></div></div>'
+      };
+      html=sections[tab]||sections.overview;
+    }else{
+      const [campaignsTotal,activeCampaigns,apps,messages,allCreators,matchRows]=await Promise.all([
+        countOwned('campaigns',['brand_id'],ctx.u.id),
+        (async()=>{const rows=await safeRows('campaigns',{limit:100});return rows.filter(r=>anyId(r,['brand_id'],ctx.u.id)&&(!campaignStatus(r)||low(campaignStatus(r))==='active')).length})(),
+        countOwned('applications',['brand_id'],ctx.u.id),
+        messagesFor(ctx.u.id),
+        safeRows('creator_profiles',{limit:100}),
+        safeRows('matches',{limit:100})
+      ]);
+      const ownedApps=sortRecent((await safeRows('applications',{limit:120})).filter(r=>anyId(r,['brand_id'],ctx.u.id))).slice(0,8);
+      const ownedCampaignRows=sortRecent((await safeRows('campaigns',{limit:100})).filter(r=>anyId(r,['brand_id'],ctx.u.id))).slice(0,8);
+      const ownedMatches=sortRecent(matchRows.filter(r=>anyId(r,['brand_id'],ctx.u.id))).slice(0,8);
+      const brandTokens=tokensFrom(fieldValue('brand',d,'creator_niche')+' '+fieldValue('brand',d,'industry'));
+      const discovered=allCreators.filter(c=>{const s=low(pick(c,['niche','category','industry'],'')+' '+pick(c,['audience_location','audience'],'')+' '+pick(c,['portfolio','bio','description'],''));return !brandTokens.length||brandTokens.some(t=>s.includes(t))}).sort((a,b)=>num(b.followers)-num(a.followers)).slice(0,8);
+      const tabs={
+        overview:'<div class="real-dash-head"><div><div class="real-dash-kicker">BRAND OVERVIEW</div><div class="real-dash-title">Welcome, '+esc(name)+'.</div><p class="real-dash-sub">Your brand workspace is generated from your authenticated account, stored business profile and live collaboration records.</p></div><div><div class="real-dash-avatar">'+esc(initials(name))+'</div><div class="real-live" style="margin-top:8px"><i></i> LIVE DATABASE</div></div></div><div class="real-grid4"><div class="real-stat"><small>Profile completion</small><strong>'+strength+'%</strong><span>Based on saved brand fields</span></div><div class="real-stat"><small>Total campaigns</small><strong>'+campaignsTotal+'</strong><span>Linked to your brand account</span></div><div class="real-stat"><small>Active campaigns</small><strong>'+activeCampaigns+'</strong><span>Current status = active</span></div><div class="real-stat"><small>Applications</small><strong>'+apps+'</strong><span>Linked to your brand account</span></div></div><div class="real-grid2"><div class="real-card"><h3>Creator discovery</h3><p>Profiles below are real creator records available to the current database query, filtered by your saved creator niche when possible.</p><div class="real-list">'+(discovered.length?discovered.slice(0,5).map(c=>'<div class="real-item"><div class="real-item-top"><div><div class="real-item-title">'+esc(pick(c,['display_name','name'],'Creator'))+'</div><div class="real-item-meta">'+esc(pick(c,['niche','category'],'Niche not set'))+' · '+formatNum(c.followers)+' followers · '+formatNum(c.average_reach)+' avg. reach</div></div><span class="real-tag">CREATOR</span></div></div>').join(''):'<div class="real-empty">No creator profiles are available to this account yet.</div>')+'</div></div><div class="real-card"><h3>Brand profile snapshot</h3><p>These are the business details saved to your account.</p>'+profileCard('brand',d)+'</div></div>',
+        campaigns:'<div class="real-dash-head"><div><div class="real-dash-kicker">CAMPAIGNS</div><div class="real-dash-title">Your live campaigns</div><p class="real-dash-sub">Only campaign rows linked to your authenticated brand are shown.</p></div><div class="real-live"><i></i> '+campaignsTotal+' TOTAL</div></div><div class="real-card"><div class="real-list">'+(ownedCampaignRows.length?ownedCampaignRows.map(c=>'<div class="real-item"><div class="real-item-top"><div><div class="real-item-title">'+esc(campaignName(c))+'</div><div class="real-item-meta">'+esc(campaignBrief(c)||campaignNiche(c)||'No description stored')+(campaignBudget(c)?' · '+esc(campaignBudget(c)):'')+'</div></div><span class="real-tag">'+esc(campaignStatus(c)||'STORED')+'</span></div></div>').join(''):'<div class="real-empty">No campaigns have been created for this brand account yet.</div>')+'</div></div>',
+        creators:'<div class="real-dash-head"><div><div class="real-dash-kicker">FIND CREATORS</div><div class="real-dash-title">Live creator profiles</div><p class="real-dash-sub">Creator cards are sourced from real creator profile records. No sample creators are generated.</p></div><div class="real-live"><i></i> '+allCreators.length+' RECORDS READ</div></div><div class="real-grid2"><div class="real-card"><h3>Profiles relevant to your saved niche</h3><div class="real-list">'+(discovered.length?discovered.map(c=>'<div class="real-item"><div class="real-item-top"><div><div class="real-item-title">'+esc(pick(c,['display_name','name'],'Creator'))+'</div><div class="real-item-meta">'+esc(pick(c,['niche','category'],'Niche not set'))+' · '+formatNum(c.followers)+' followers · '+formatNum(c.average_reach)+' reach</div><div class="real-item-meta">'+esc(pick(c,['audience_location'],'Audience location not set'))+'</div></div><span class="real-tag">PROFILE</span></div></div>').join(''):'<div class="real-empty">No creator records matched your saved niche text.</div>')+'</div></div><div class="real-card"><h3>Your creator requirements</h3>'+profileCard('brand',d)+'</div></div>',
+        shortlist:'<div class="real-dash-head"><div><div class="real-dash-kicker">SHORTLIST</div><div class="real-dash-title">Your saved match records</div><p class="real-dash-sub">Shortlist rows are taken from the live matches table when your brand is linked to them.</p></div><div class="real-live"><i></i> '+ownedMatches.length+' RECORDS</div></div><div class="real-card"><div class="real-list">'+(ownedMatches.length?ownedMatches.map(r=>'<div class="real-item"><div class="real-item-top"><div><div class="real-item-title">'+esc(pick(r,['title','campaign_name','match_title'],'Creator match'))+'</div><div class="real-item-meta">Creator '+esc(pick(r,['creator_id'],'not linked'))+' · Campaign '+esc(pick(r,['campaign_id'],'not linked'))+'</div></div><span class="real-tag">'+esc(pick(r,['status','state'],'MATCHED'))+'</span></div></div>').join(''):'<div class="real-empty">No live match/shortlist records are stored for this brand account yet.</div>')+'</div></div>',
+        applications:'<div class="real-dash-head"><div><div class="real-dash-kicker">APPLICATIONS</div><div class="real-dash-title">Creator applications</div><p class="real-dash-sub">Only applications linked to your brand account are shown.</p></div><div class="real-live"><i></i> '+apps+' APPLICATIONS</div></div><div class="real-card"><div class="real-list">'+(ownedApps.length?ownedApps.map(r=>'<div class="real-item"><div class="real-item-top"><div><div class="real-item-title">'+esc(pick(r,['campaign_name','campaign_title','title'],'Creator application'))+'</div><div class="real-item-meta">Creator '+esc(pick(r,['creator_id'],'not linked'))+' · Submitted '+esc(pick(r,['created_at','submitted_at'],'date not stored'))+'</div></div><span class="real-tag">'+esc(pick(r,['status','state'],'SUBMITTED'))+'</span></div></div>').join(''):'<div class="real-empty">No creator applications are stored for this brand account yet.</div>')+'</div></div>',
+        messages:'<div class="real-dash-head"><div><div class="real-dash-kicker">MESSAGES</div><div class="real-dash-title">Your conversations</div><p class="real-dash-sub">Messages are loaded from the live messages table for your account.</p></div><div class="real-live"><i></i> '+messages.length+' RECENT</div></div><div class="real-card"><div class="real-list">'+(messages.length?messages.map(r=>'<div class="real-item"><div class="real-item-top"><div><div class="real-item-title">'+esc(pick(r,['subject','title'],'Message'))+'</div><div class="real-item-meta">'+esc(pick(r,['body','message','content'],'No message preview stored'))+'</div></div><span class="real-tag">'+esc(pick(r,['status'],'MESSAGE'))+'</span></div></div>').join(''):'<div class="real-empty">No messages are stored for this account yet.</div>')+'</div></div>',
+        analytics:'<div class="real-dash-head"><div><div class="real-dash-kicker">ANALYTICS</div><div class="real-dash-title">Live brand activity</div><p class="real-dash-sub">Counts are calculated from records linked to your account. No synthetic response rates or match scores are shown.</p></div><div class="real-live"><i></i> LIVE RECORDS</div></div><div class="real-grid4"><div class="real-stat"><small>Campaigns</small><strong>'+campaignsTotal+'</strong><span>Linked campaign rows</span></div><div class="real-stat"><small>Active</small><strong>'+activeCampaigns+'</strong><span>Status = active</span></div><div class="real-stat"><small>Applications</small><strong>'+apps+'</strong><span>Linked applications</span></div><div class="real-stat"><small>Messages</small><strong>'+messages.length+'</strong><span>Recent records visible</span></div></div><div class="real-card"><h3>Current creator discovery</h3><p>'+allCreators.length+' creator profile records were available to the current query; '+discovered.length+' matched your saved niche text.</p></div>',
+        settings:'<div class="real-dash-head"><div><div class="real-dash-kicker">SETTINGS</div><div class="real-dash-title">Brand account settings</div><p class="real-dash-sub">Authenticated account and business profile status.</p></div></div><div class="real-card">'+profileCard('brand',d)+'<div class="real-list"><div class="real-row"><strong>Email</strong><span class="real-muted">'+esc(email)+'</span></div><div class="real-row"><strong>Role</strong><span class="real-muted">Brand</span></div><div class="real-row"><strong>Authentication</strong><span class="real-muted">Supabase Auth</span></div><div class="real-row"><strong>Profile status</strong><span class="real-muted">'+strength+'% complete</span></div></div></div>'
+      };
+      html=tabs[tab]||tabs.overview;
+    }
+    main.innerHTML=html;
+    const root=$(role==='creator'?'creatorWorkspace':'brandWorkspace');
+    root.querySelectorAll('.ws-btn').forEach(x=>x.classList.remove('active'));
+    if(button)button.classList.add('active');
+  };
+
+  window.renderWorkspace=realRenderWorkspace;
+  window.wsTab=realWsTab;
+  async function refreshOpenWorkspace(){
+    try{
+      dashClient=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:false,detectSessionInUrl:false,storageKey:'lajviora_real_email_v2'}});
+      const s=await dashClient.auth.getSession();
+      if(!s.data?.session)return;
+      const user=s.data.session.user;
+      const p=await dashClient.from('profiles').select('role').eq('id',user.id).maybeSingle();
+      if(p.data?.role){
+        await realRenderWorkspace(p.data.role);
+        if(window.showPortal)window.showPortal(p.data.role==='creator'?'creatorWorkspace':'brandWorkspace');
+      }
+    }catch(e){console.error('LAJVIORA real dashboard refresh:',e)}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',refreshOpenWorkspace,{once:true});else refreshOpenWorkspace();
 })();
 </script>
 </div></body></html>
