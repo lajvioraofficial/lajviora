@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
-<meta content="light dark" name="color-scheme"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <title>LAJVIORA — Small creators. Real opportunities.</title>
 <style>
 :root{color-scheme:light;--bg:#fbfaf6;--surface:#fffefb;--surface2:#f7f0e3;--text:#211f1b;--muted:#777168;--line:#e9e1d4;--accent:#9a7540;--accent2:#d5b477;--dark:#211f1b;--shadow:0 22px 60px rgba(91,70,37,.10)}
@@ -16,20 +15,20 @@ nav{height:78px;display:flex;align-items:center;justify-content:space-between;bo
 .strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0;color:var(--muted);font-size:13px}.strip .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.strip strong{color:var(--text)}section{padding:100px 0}.section-head{text-align:center;max-width:720px;margin:0 auto 46px}.section-head h2{font-size:42px;letter-spacing:-1.8px;margin:0 0 13px}.section-head p{color:var(--muted);line-height:1.7}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:29px;box-shadow:0 10px 35px rgba(30,20,55,.035)}.icon{width:44px;height:44px;border-radius:14px;background:var(--surface2);display:grid;place-items:center;color:var(--accent);font-weight:900;margin-bottom:21px}.card h3{margin:0 0 9px;font-size:18px}.card p{margin:0;color:var(--muted);line-height:1.65;font-size:14px}.split{display:grid;grid-template-columns:1fr 1fr;gap:20px}.panel{border:1px solid var(--line);border-radius:27px;padding:36px;background:var(--surface);box-shadow:0 10px 35px rgba(30,20,55,.035)}.panel h3{font-size:28px;margin:0 0 10px}.panel p{color:var(--muted);line-height:1.65}.list{padding:0;margin:25px 0 0;list-style:none;display:grid;gap:14px}.list li{display:flex;gap:10px;align-items:flex-start;font-size:14px}.check{color:var(--accent);font-weight:900}.cta{padding:62px 30px;border-radius:30px;background:linear-gradient(135deg,#211a31,#3a2c60);color:white;text-align:center;box-shadow:0 24px 60px rgba(48,31,86,.18)}.cta h2{font-size:44px;letter-spacing:-1.8px;margin:0 0 12px}.cta p{color:#d8d2e3;max-width:600px;margin:0 auto 26px;line-height:1.65}.cta .secondary{background:white;border:0;color:#17151d}footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted);font-size:12px}footer .wrap{display:flex;justify-content:space-between}
 @media(max-width:850px){.hero{grid-template-columns:1fr;gap:40px;padding-top:60px}.links{display:none}.grid,.split{grid-template-columns:1fr}h1{letter-spacing:-2px}.section-head h2,.cta h2{font-size:32px}}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body><div id="app">
 <header><div class="wrap"><nav><a class="brand-wrap" href="#top"><span class="mark"></span><span><span class="brand">LAJVIORA</span><span class="brand-sub">By the blessings of Late Lajwanti Chawla ♡</span></span></a><div class="links"><a href="#creators">Creators</a><a href="#brands">Brands</a><a href="#how">How it works</a></div><a class="navcta" href="javascript:void(0)" onclick="openPortal('auth')">Sign in / Sign up</a></nav></div></header>
 <main id="top">
-<section class="hero wrap"><div><span class="eyebrow"><i class="dot"></i> CREATOR × BRAND COLLABORATIONS</span><h1>Small creators.<br/><span>Real opportunities.</span></h1><p class="lead">LAJVIORA is being built to help emerging creators discover relevant brand campaigns — and help brands find creators who genuinely fit.</p><div class="actions"><a class="btn primary" href="javascript:void(0)" onclick="openPortal('signup')">Join LAJVIORA →</a><a class="btn secondary" href="javascript:void(0)" onclick="openPortal('signup')">I'm a brand →</a></div></div>
-<div class="hero-card"><div class="dash"><div class="dash-top"><strong>Live platform data</strong><span class="mini">No demo metrics</span></div><div class="campaign" style="padding:28px;text-align:center"><div class="pill">LIVE MODE</div><h3 style="font-size:19px;margin:13px 0 7px">Real campaigns will appear here.</h3><p>No sample campaigns, creator metrics or matches are shown. Live data appears after authenticated records exist.</p></div></div></div></section>
-<div class="strip"><div class="wrap"><span>Built for <strong>micro &amp; nano creators</strong></span><span>Relevant campaigns</span><span>Better creator-brand fit</span><span>Early access is free</span></div></div>
+<section class="hero wrap"><div><span class="eyebrow"><i class="dot"></i> CREATOR × BRAND COLLABORATIONS</span><h1>Small creators.<br><span>Real opportunities.</span></h1><p class="lead">LAJVIORA is being built to help emerging creators discover relevant brand campaigns — and help brands find creators who genuinely fit.</p><div class="actions"><a class="btn primary" href="javascript:void(0)" onclick="openPortal('signup')">Join LAJVIORA →</a><a class="btn secondary" href="javascript:void(0)" onclick="openPortal('signup')">I'm a brand →</a></div></div>
+<div class="hero-card"><div class="dash"><div class="dash-top"><strong>Campaigns for you</strong><span class="mini">Early preview</span></div><div class="campaign"><div class="campaign-top"><div><span class="pill">BEAUTY</span><h3>Skincare Creator Campaign</h3><p>1K–20K followers · Reels</p></div><strong>₹5K+</strong></div><div class="match"><div class="bar"><i></i></div><b>87% match</b></div></div><div class="campaign"><div class="campaign-top"><div><span class="pill">FASHION</span><h3>Streetwear Launch</h3><p>2K–30K followers · Short video</p></div><strong>₹3K+</strong></div><div class="match"><div class="bar"><i style="width:74%"></i></div><b>74% match</b></div></div><div class="campaign"><div class="campaign-top"><div><span class="pill">FOOD</span><h3>Local Food Brand</h3><p>1K–10K followers · Post + story</p></div><strong>₹2K+</strong></div><div class="match"><div class="bar"><i style="width:91%"></i></div><b>91% match</b></div></div></div></div></section>
+<div class="strip"><div class="wrap"><span>Built for <strong>micro & nano creators</strong></span><span>Relevant campaigns</span><span>Better creator-brand fit</span><span>Early access is free</span></div></div>
 <section id="creators"><div class="wrap"><div class="section-head"><h2>Creators shouldn't need 100K followers.</h2><p>Your niche, audience and content quality can matter more than a big follower number. LAJVIORA is designed around that idea.</p></div><div class="grid"><article class="card"><div class="icon">01</div><h3>Build your profile</h3><p>Show your niche, platforms, audience, portfolio and the kind of collaborations you want.</p></article><article class="card"><div class="icon">02</div><h3>Discover campaigns</h3><p>See opportunities that fit your content category, audience size and collaboration preferences.</p></article><article class="card"><div class="icon">03</div><h3>Get discovered</h3><p>Give brands a simple way to find emerging creators who actually match their campaign.</p></article></div></div></section>
 <section id="brands"><div class="wrap"><div class="section-head"><h2>Better matches for brands.</h2><p>Big follower counts don't automatically mean the right audience. Find creators based on fit.</p></div><div class="split"><div class="panel"><h3>For brands</h3><p>Tell LAJVIORA what you're trying to achieve and what kind of creator you need.</p><ul class="list"><li><span class="check">✓</span> Define niche, audience and budget</li><li><span class="check">✓</span> Discover emerging creators</li><li><span class="check">✓</span> Build long-term creator relationships</li></ul></div><div class="panel"><h3>For creators</h3><p>Stop relying only on cold DMs. Find opportunities designed around your niche and audience.</p><ul class="list"><li><span class="check">✓</span> Relevant campaign opportunities</li><li><span class="check">✓</span> Simple applications</li><li><span class="check">✓</span> Build your collaboration portfolio</li></ul></div></div></div></section>
 <section id="how"><div class="wrap"><div class="section-head"><h2>Simple by design.</h2><p>We're starting lean so creators and brands can get value before the platform gets complicated.</p></div><div class="grid"><article class="card"><div class="icon">1</div><h3>Join</h3><p>Creators and brands submit a short profile to join the early community.</p></article><article class="card"><div class="icon">2</div><h3>Match</h3><p>Campaign requirements and creator profiles are matched around relevance and fit.</p></article><article class="card"><div class="icon">3</div><h3>Collaborate</h3><p>Start the conversation, agree on the deliverables and create something great.</p></article></div></div></section>
 <section id="join" style="padding-top:45px"><div class="wrap"><div class="card" style="max-width:900px;margin:auto;text-align:center"><div style="font-size:11px;letter-spacing:1px;color:var(--accent)">LAJVIORA EARLY ACCESS</div><h2 style="font-size:34px;margin:8px 0 10px">Your collaboration workspace starts here.</h2><p style="color:var(--muted);max-width:650px;margin:0 auto 25px;line-height:1.7">Create one account, choose your role, complete your profile and enter a workspace built specifically for creators or brands.</p><div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap"><button class="btn primary" onclick="openPortal('signup')">Create account →</button><button class="btn secondary" onclick="openPortal('login')">Sign in</button></div></div></div></section>
-<section id="dashboard" style="display:none!important"></section></main></div>
-<section class="portal-shell" id="portalPage" style="display:none"><div class="wrap"><div class="portal-head"><a class="brand-wrap" href="javascript:void(0)" onclick="backHome()"><span class="mark"></span><span><span class="brand">LAJVIORA</span><span class="brand-sub">By the blessings of Late Lajwanti Chawla ♡</span></span></a><button class="btn secondary" onclick="backHome()">← Back to website</button></div><div class="portal-step" id="portalAuth"><div class="portal-card" style="max-width:880px;margin:auto;text-align:center"><div class="eyebrow">LAJVIORA ACCOUNT</div><h2>Build your collaboration workspace.</h2><p>One account. One role. One professional workspace built around what you do.</p><div class="portal-grid" style="margin-top:25px"><div class="card"><div class="icon" style="margin-bottom:15px">↗</div><h3>Sign in</h3><p>Already part of LAJVIORA? Continue to your workspace.</p><button class="btn primary" onclick="showPortal('login')" style="width:100%;margin-top:12px">Sign in →</button></div><div class="card"><div class="icon" style="margin-bottom:15px">+</div><h3>Create account</h3><p>Start your Creator or Brand profile in a few guided steps.</p><button class="btn primary" onclick="showPortal('signup')" style="width:100%;margin-top:12px">Sign up →</button></div></div><button class="btn secondary" onclick="googleDemo()" style="width:100%;max-width:420px;margin:20px auto 0">Continue with Google</button><p class="small-note">Google sign-in is shown in the prototype; real Google OAuth will be connected with the authentication backend.</p></div></div><div class="portal-step" id="portalLogin" style="display:none"><div class="portal-card" style="max-width:540px;margin:auto"><div class="eyebrow">WELCOME BACK</div><h2>Sign in to LAJVIORA</h2><p>Use your account to continue to your existing workspace.</p><input id="loginEmail" placeholder="Email address" type="email"/><input id="loginPassword" placeholder="Password" type="password"/><button class="btn primary" onclick="signInDemo()" style="width:100%;margin-top:8px">Sign in →</button><button class="btn secondary" onclick="googleDemo()" style="width:100%;margin-top:10px">Continue with Google</button><div class="portal-links"><a href="javascript:void(0)" onclick="showPortal('signup')">Create account</a><a href="javascript:void(0)" onclick="showPortal('auth')">Back</a></div></div></div><div class="portal-step" id="portalSignup" style="display:none"><div class="portal-card" style="max-width:540px;margin:auto"><div class="eyebrow">STEP 1 OF 3 · ACCOUNT</div><h2>Create your LAJVIORA account.</h2><p>Start with your basic account details.</p><input id="signupName" placeholder="Full name"/><input id="signupEmail" placeholder="Email address" type="email"/><input id="signupPassword" minlength="6" placeholder="Create password (6+ characters)" type="password"/><button class="btn primary" onclick="nextRole()" style="width:100%;margin-top:8px">Continue →</button><div class="divider"><span></span>OR<span></span></div><button class="btn secondary" onclick="googleDemo()" style="width:100%">Continue with Google</button><div class="portal-links"><a href="javascript:void(0)" onclick="showPortal('login')">Already have an account? Sign in</a><a href="javascript:void(0)" onclick="showPortal('auth')">Back</a></div></div></div><div class="portal-step" id="portalRole" style="display:none"><div class="portal-card" style="max-width:850px;margin:auto"><div class="eyebrow">STEP 2 OF 3 · ACCOUNT TYPE</div><h2>How will you use LAJVIORA?</h2><p>Choose the workspace that fits what you are here to do.</p><div class="portal-grid" style="margin-top:22px"><button class="card role-card" onclick="chooseRole('creator')"><div class="icon">✦</div><h3>I'm a Creator</h3><p>Discover campaigns, apply to opportunities, manage collaborations and build your professional creator profile.</p><strong>Continue as Creator →</strong></button><button class="card role-card" onclick="chooseRole('brand')"><div class="icon">◆</div><h3>I'm a Brand</h3><p>Create campaigns, discover creators, build shortlists and manage applications from one workspace.</p><strong>Continue as Brand →</strong></button></div></div></div><div class="portal-step" id="portalCreator" style="display:none"><div class="portal-card" style="max-width:780px;margin:auto"><div class="eyebrow">STEP 3 OF 3 · CREATOR PROFILE</div><h2>Tell us about your creator journey.</h2><p>These signals help LAJVIORA match you with relevant campaigns. Follower count is only one part of the picture.</p><div class="portal-grid"><input id="cDisplay" placeholder="Creator / display name"/><input id="cNiche" placeholder="Primary niche (fashion, gaming, beauty...)"/><input id="cSocial" placeholder="Instagram / YouTube link"/><input id="cFollowers" placeholder="Followers"/><input id="cReach" placeholder="Average reach / views"/><input id="cAudience" placeholder="Main audience location"/><input id="cType" placeholder="Preferred collaboration type"/><input id="cRate" placeholder="Typical collaboration budget / rate"/></div><textarea id="cPortfolio" placeholder="Portfolio, past collaborations or anything brands should know"></textarea><button class="btn primary" onclick="enterWorkspace('creator')" style="width:100%;margin-top:10px">Enter Creator Workspace →</button></div></div><div class="portal-step" id="portalBrand" style="display:none"><div class="portal-card" style="max-width:780px;margin:auto"><div class="eyebrow">STEP 3 OF 3 · BRAND PROFILE</div><h2>Tell us what your brand needs.</h2><p>Clear campaign details help you discover creator profiles that fit your audience, niche and budget.</p><div class="portal-grid"><input id="bName" placeholder="Brand name"/><input id="bIndustry" placeholder="Industry / category"/><input id="bWebsite" placeholder="Website / Instagram / LinkedIn"/><input id="bContact" placeholder="Business contact name"/><input id="bBudget" placeholder="Typical campaign budget"/><input id="bNiche" placeholder="Creator niche you need"/><input id="bReach" placeholder="Preferred creator reach / size"/><input id="bGoal" placeholder="Primary campaign goal"/></div><textarea id="bBrief" placeholder="Campaign brief, deliverables, timeline and creator requirements"></textarea><button class="btn primary" onclick="enterWorkspace('brand')" style="width:100%;margin-top:10px">Enter Brand Workspace →</button></div></div><div class="portal-step" id="creatorWorkspace" style="display:none"></div><div class="portal-step" id="brandWorkspace" style="display:none"></div></div></section><footer><div class="wrap"><span>© 2026 LAJVIORA</span><span>Small creators. Real opportunities.</span></div></footer>
+
+<section id="dashboard" style="background:var(--surface2);border-top:1px solid var(--line)"><div class="wrap"><div class="section-head"><h2>Inside the LAJVIORA platform.</h2><p>A premium workspace for creators and brands — designed around discovery, applications, campaign management and collaboration.</p></div><div style="display:grid;grid-template-columns:230px 1fr;gap:0;border:1px solid var(--line);border-radius:26px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);min-height:610px"><aside style="background:#211f1b;color:#fff;padding:24px 16px"><div style="font-weight:900;letter-spacing:2px;padding:10px 12px 28px">LAJVIORA</div><div style="font-size:11px;color:#a9a39a;padding:0 12px 8px;text-transform:uppercase;letter-spacing:1px">Workspace</div><div class="dashnav active" data-panel="overview" style="padding:11px 12px;border-radius:10px;margin-bottom:5px;cursor:pointer">⌂ Overview</div><div class="dashnav" data-panel="profile" style="padding:11px 12px;color:#bdb7ae;cursor:pointer">◎ My Profile</div><div class="dashnav" data-panel="matches" style="padding:11px 12px;color:#bdb7ae;cursor:pointer">✦ Matches</div><div class="dashnav" data-panel="applications" style="padding:11px 12px;color:#bdb7ae;cursor:pointer">▣ Applications</div><div class="dashnav" data-panel="messages" style="padding:11px 12px;color:#bdb7ae;cursor:pointer">✉ Messages</div><div class="dashnav" data-panel="analytics" style="padding:11px 12px;color:#bdb7ae;cursor:pointer">◌ Analytics</div><div class="dashnav" data-panel="settings" style="padding:11px 12px;color:#bdb7ae;cursor:pointer">⚙ Settings</div><div style="margin-top:55px;padding:13px 12px;border-top:1px solid #3a332b;color:#bdb7ae;font-size:12px">Creator account<br><strong style="color:#fff">@yourcreator</strong></div></aside><div style="padding:30px"><div style="display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:25px"><div><div style="font-size:12px;color:var(--muted)">MONDAY, SEPTEMBER 28</div><h3 style="font-size:28px;margin:4px 0">Good morning, Creator.</h3><div style="color:var(--muted);font-size:13px">Here’s what’s happening with your profile.</div></div><div style="width:42px;height:42px;border-radius:50%;background:var(--surface2);display:grid;place-items:center;font-weight:800;color:var(--accent)">YC</div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:24px"><div class="card" style="padding:17px"><small style="color:var(--muted)">Profile strength</small><strong style="display:block;font-size:23px;margin-top:5px">82%</strong><span style="font-size:11px;color:var(--accent)">+18% to complete</span></div><div class="card" style="padding:17px"><small style="color:var(--muted)">Matches</small><strong style="display:block;font-size:23px;margin-top:5px">12</strong><span style="font-size:11px;color:var(--accent)">3 new today</span></div><div class="card" style="padding:17px"><small style="color:var(--muted)">Applications</small><strong style="display:block;font-size:23px;margin-top:5px">5</strong><span style="font-size:11px;color:var(--muted)">2 pending</span></div><div class="card" style="padding:17px"><small style="color:var(--muted)">Avg. reach</small><strong style="display:block;font-size:23px;margin-top:5px">38.4K</strong><span style="font-size:11px;color:var(--accent)">Last 30 days</span></div></div><div style="display:grid;grid-template-columns:1.25fr .75fr;gap:18px"><div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:18px"><strong>Recommended campaigns</strong><span style="font-size:12px;color:var(--accent)">View all →</span></div><div style="padding:15px 0;border-bottom:1px solid var(--line)"><div style="display:flex;justify-content:space-between"><div><span class="pill">BEAUTY</span><strong style="display:block;margin-top:8px">Skincare Launch</strong><small style="color:var(--muted)">Reels · 20K+ reach</small></div><strong>92%</strong></div></div><div style="padding:15px 0;border-bottom:1px solid var(--line)"><div style="display:flex;justify-content:space-between"><div><span class="pill">FASHION</span><strong style="display:block;margin-top:8px">Streetwear Drop</strong><small style="color:var(--muted)">Short video · ₹3K+</small></div><strong>84%</strong></div></div><div style="padding:15px 0"><div style="display:flex;justify-content:space-between"><div><span class="pill">FOOD</span><strong style="display:block;margin-top:8px">Local Food Campaign</strong><small style="color:var(--muted)">Post + story · ₹2K+</small></div><strong>78%</strong></div></div></div><div class="card"><strong>Complete your profile</strong><p style="color:var(--muted);font-size:13px;line-height:1.6">Profiles with more information can get better matches.</p><div style="height:8px;background:var(--surface2);border-radius:10px;margin:18px 0 8px"><div style="width:82%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:10px"></div></div><strong style="font-size:13px">82% complete</strong><div style="margin-top:20px;padding:13px;background:var(--surface2);border-radius:12px;font-size:12px">✓ Social profile<br>✓ Niche & audience<br>○ Add portfolio<br>○ Add past collaborations</div></div></div></div></div></div></div></section>
+</main><section id="portalPage" style="display:none" class="portal-shell"><div class="wrap"><div class="portal-head"><a class="brand-wrap" href="javascript:void(0)" onclick="backHome()"><span class="mark"></span><span><span class="brand">LAJVIORA</span><span class="brand-sub">By the blessings of Late Lajwanti Chawla ♡</span></span></a><button class="btn secondary" onclick="backHome()">← Back to website</button></div><div id="portalAuth" class="portal-step"><div class="portal-card" style="max-width:880px;margin:auto;text-align:center"><div class="eyebrow">LAJVIORA ACCOUNT</div><h2>Build your collaboration workspace.</h2><p>One account. One role. One professional workspace built around what you do.</p><div class="portal-grid" style="margin-top:25px"><div class="card"><div class="icon" style="margin-bottom:15px">↗</div><h3>Sign in</h3><p>Already part of LAJVIORA? Continue to your workspace.</p><button class="btn primary" style="width:100%;margin-top:12px" onclick="showPortal('login')">Sign in →</button></div><div class="card"><div class="icon" style="margin-bottom:15px">+</div><h3>Create account</h3><p>Start your Creator or Brand profile in a few guided steps.</p><button class="btn primary" style="width:100%;margin-top:12px" onclick="showPortal('signup')">Sign up →</button></div></div><button class="btn secondary" style="width:100%;max-width:420px;margin:20px auto 0" onclick="googleDemo()">Continue with Google</button><p class="small-note">Google sign-in is shown in the prototype; real Google OAuth will be connected with the authentication backend.</p></div></div><div id="portalLogin" class="portal-step" style="display:none"><div class="portal-card" style="max-width:540px;margin:auto"><div class="eyebrow">WELCOME BACK</div><h2>Sign in to LAJVIORA</h2><p>Use your account to continue to your existing workspace.</p><input id="loginEmail" type="email" placeholder="Email address"><input id="loginPassword" type="password" placeholder="Password"><button class="btn primary" style="width:100%;margin-top:8px" onclick="signInDemo()">Sign in →</button><button class="btn secondary" style="width:100%;margin-top:10px" onclick="googleDemo()">Continue with Google</button><div class="portal-links"><a href="javascript:void(0)" onclick="showPortal('signup')">Create account</a><a href="javascript:void(0)" onclick="showPortal('auth')">Back</a></div></div></div><div id="portalSignup" class="portal-step" style="display:none"><div class="portal-card" style="max-width:540px;margin:auto"><div class="eyebrow">STEP 1 OF 3 · ACCOUNT</div><h2>Create your LAJVIORA account.</h2><p>Start with your basic account details.</p><input id="signupName" placeholder="Full name"><input id="signupEmail" type="email" placeholder="Email address"><input id="signupPassword" type="password" minlength="6" placeholder="Create password (6+ characters)"><button class="btn primary" style="width:100%;margin-top:8px" onclick="nextRole()">Continue →</button><div class="divider"><span></span>OR<span></span></div><button class="btn secondary" style="width:100%" onclick="googleDemo()">Continue with Google</button><div class="portal-links"><a href="javascript:void(0)" onclick="showPortal('login')">Already have an account? Sign in</a><a href="javascript:void(0)" onclick="showPortal('auth')">Back</a></div></div></div><div id="portalRole" class="portal-step" style="display:none"><div class="portal-card" style="max-width:850px;margin:auto"><div class="eyebrow">STEP 2 OF 3 · ACCOUNT TYPE</div><h2>How will you use LAJVIORA?</h2><p>Choose the workspace that fits what you are here to do.</p><div class="portal-grid" style="margin-top:22px"><button class="card role-card" onclick="chooseRole('creator')"><div class="icon">✦</div><h3>I'm a Creator</h3><p>Discover campaigns, apply to opportunities, manage collaborations and build your professional creator profile.</p><strong>Continue as Creator →</strong></button><button class="card role-card" onclick="chooseRole('brand')"><div class="icon">◆</div><h3>I'm a Brand</h3><p>Create campaigns, discover creators, build shortlists and manage applications from one workspace.</p><strong>Continue as Brand →</strong></button></div></div></div><div id="portalCreator" class="portal-step" style="display:none"><div class="portal-card" style="max-width:780px;margin:auto"><div class="eyebrow">STEP 3 OF 3 · CREATOR PROFILE</div><h2>Tell us about your creator journey.</h2><p>These signals help LAJVIORA match you with relevant campaigns. Follower count is only one part of the picture.</p><div class="portal-grid"><input id="cDisplay" placeholder="Creator / display name"><input id="cNiche" placeholder="Primary niche (fashion, gaming, beauty...)"><input id="cSocial" placeholder="Instagram / YouTube link"><input id="cFollowers" placeholder="Followers"><input id="cReach" placeholder="Average reach / views"><input id="cAudience" placeholder="Main audience location"><input id="cType" placeholder="Preferred collaboration type"><input id="cRate" placeholder="Typical collaboration budget / rate"></div><textarea id="cPortfolio" placeholder="Portfolio, past collaborations or anything brands should know"></textarea><button class="btn primary" style="width:100%;margin-top:10px" onclick="enterWorkspace('creator')">Enter Creator Workspace →</button></div></div><div id="portalBrand" class="portal-step" style="display:none"><div class="portal-card" style="max-width:780px;margin:auto"><div class="eyebrow">STEP 3 OF 3 · BRAND PROFILE</div><h2>Tell us what your brand needs.</h2><p>Clear campaign details help you discover creator profiles that fit your audience, niche and budget.</p><div class="portal-grid"><input id="bName" placeholder="Brand name"><input id="bIndustry" placeholder="Industry / category"><input id="bWebsite" placeholder="Website / Instagram / LinkedIn"><input id="bContact" placeholder="Business contact name"><input id="bBudget" placeholder="Typical campaign budget"><input id="bNiche" placeholder="Creator niche you need"><input id="bReach" placeholder="Preferred creator reach / size"><input id="bGoal" placeholder="Primary campaign goal"></div><textarea id="bBrief" placeholder="Campaign brief, deliverables, timeline and creator requirements"></textarea><button class="btn primary" style="width:100%;margin-top:10px" onclick="enterWorkspace('brand')">Enter Brand Workspace →</button></div></div><div id="creatorWorkspace" class="portal-step" style="display:none"></div><div id="brandWorkspace" class="portal-step" style="display:none"></div></div></section><footer><div class="wrap"><span>© 2026 LAJVIORA</span><span>Small creators. Real opportunities.</span></div></footer>
 <script>
 const portalCss=document.createElement('style');portalCss.textContent='#dashboard{display:none!important}.portal-shell{min-height:100vh;padding:30px 0 70px;background:var(--bg)}.portal-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:35px}.portal-head .brand-wrap{max-width:330px}.portal-card{background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:32px;box-shadow:var(--shadow)}.portal-card h2{font-size:36px;letter-spacing:-1.4px;margin:8px 0}.portal-card>p{color:var(--muted);line-height:1.7}.portal-step input,.portal-step textarea{box-sizing:border-box}.portal-step textarea{min-height:130px}.portal-links{display:flex;justify-content:space-between;gap:15px;margin-top:18px;font-size:13px}.portal-links a{color:var(--accent)}.divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:11px;margin:18px 0}.divider span{height:1px;background:var(--line);flex:1}.small-note{font-size:11px!important;margin-top:12px!important}.role-card{text-align:left;cursor:pointer;transition:.2s}.role-card:hover{transform:translateY(-2px);border-color:var(--accent2)}.role-card strong{color:var(--accent);display:block;margin-top:16px}.workspace{display:grid;grid-template-columns:225px 1fr;min-height:700px;border:1px solid var(--line);border-radius:26px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}.workspace-side{background:#211f1b;color:#fff;padding:24px 15px}.workspace-side .ws-title{font-weight:900;letter-spacing:2px;padding:10px 12px 25px}.workspace-side .ws-label{font-size:10px;color:#aaa49b;letter-spacing:1px;padding:0 12px 10px}.ws-btn{display:block;width:100%;text-align:left;border:0;border-radius:10px;padding:11px 12px;margin:3px 0;background:transparent;color:#bdb7ae;cursor:pointer;font:inherit}.ws-btn.active,.ws-btn:hover{background:#302c26;color:#fff}.workspace-main{padding:32px}.ws-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:22px 0}.ws-metric{padding:19px}.ws-metric small{color:var(--muted)}.ws-metric strong{display:block;font-size:24px;margin-top:6px}.ws-panels{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}.ws-list{display:grid;gap:10px}.ws-item{padding:15px 16px;background:var(--surface2);border-radius:13px}.ws-kicker{font-size:11px;letter-spacing:1px;color:var(--accent)}@media(max-width:820px){.portal-grid{grid-template-columns:1fr}.workspace{grid-template-columns:1fr}.ws-metrics{grid-template-columns:1fr 1fr}.ws-panels{grid-template-columns:1fr}.portal-head{align-items:flex-start;flex-direction:column}}';document.head.appendChild(portalCss);
 function showPortal(step){document.querySelector('main#top').style.display='none';document.querySelector('footer').style.display='none';document.getElementById('portalPage').style.display='block';document.querySelectorAll('.portal-step').forEach(x=>x.style.display='none');const el=document.getElementById(step==='auth'?'portalAuth':'portal'+step.charAt(0).toUpperCase()+step.slice(1));if(el)el.style.display='block';window.scrollTo(0,0)}
@@ -55,210 +54,136 @@ const signupScreen=document.getElementById('portalSignup');if(signupScreen){sign
 const creatorScreen=document.getElementById('portalCreator');if(creatorScreen){const c=creatorScreen.querySelector('.portal-card');c.insertAdjacentHTML('afterbegin','<div class="form-progress"><span>01 ACCOUNT</span><i></i><span>02 ROLE</span><i></i><span>03 PROFILE</span></div>');c.querySelector('h2').textContent='Build a creator profile brands can trust.';c.querySelector('p').textContent='Tell us about your content, audience and collaboration goals. These details help LAJVIORA focus on relevance, not follower count alone.';const g=c.querySelector('.portal-grid');g.insertAdjacentHTML('beforebegin','<div class="question-head"><small>CREATOR SIGNALS</small><strong>Identity, niche & audience</strong></div>');g.insertAdjacentHTML('afterend','<div class="question-head"><small>COLLABORATION PROFILE</small><strong>How you work with brands</strong></div>')}
 const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b=brandScreen.querySelector('.portal-card');b.insertAdjacentHTML('afterbegin','<div class="form-progress"><span>01 ACCOUNT</span><i></i><span>02 ROLE</span><i></i><span>03 PROFILE</span></div>');b.querySelector('h2').textContent='Build a brand profile for better creator fit.';b.querySelector('p').textContent='Tell us about your brand, audience and campaign needs so creator discovery starts with a clear brief.';const g=b.querySelector('.portal-grid');g.insertAdjacentHTML('beforebegin','<div class="question-head"><small>BRAND SIGNALS</small><strong>Business, category & creator needs</strong></div>');g.insertAdjacentHTML('afterend','<div class="question-head"><small>CAMPAIGN BRIEF</small><strong>Goals, deliverables & requirements</strong></div>')}
 </script>
+<script>
+/* LAJVIORA v16: no fake numbers, required profile completion, local account persistence. */
+(function(){
+  const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const val=id=>(document.getElementById(id)||{}).value?.trim()||'';
+  const num=s=>{const n=Number(String(s||'').replace(/[^0-9.]/g,''));return Number.isFinite(n)?n:0};
+  const readAccounts=()=>{try{return JSON.parse(localStorage.getItem('lajvioraAccounts')||'{}')}catch{return {}}};
+  const writeAccounts=o=>localStorage.setItem('lajvioraAccounts',JSON.stringify(o));
+  const pending=()=>{try{return JSON.parse(localStorage.getItem('lajvioraPending')||'null')}catch{return null}};
+  const profileComplete=(ids)=>ids.every(id=>val(id));
+  function safeShow(step){showPortal(step)}
 
+  window.nextRole=function(){
+    const name=val('signupName'),email=val('signupEmail'),password=val('signupPassword');
+    if(!name||!email||password.length<6){alert('Please fill every account field. Password must be at least 6 characters.');return;}
+    const accounts=readAccounts();
+    if(accounts[email.toLowerCase()]){alert('An account already exists with this email. Please sign in.');return;}
+    localStorage.setItem('lajvioraPending',JSON.stringify({name,email:email.toLowerCase(),password}));
+    safeShow('role');
+  };
+
+  window.chooseRole=function(role){
+    if(!pending()){alert('Please create your account first.');safeShow('signup');return;}
+    localStorage.setItem('lajvioraRole',role);
+    safeShow(role==='creator'?'creator':'brand');
+  };
+
+  window.enterWorkspace=function(role){
+    const ids=role==='creator'?['cDisplay','cNiche','cSocial','cFollowers','cReach','cAudience','cType','cRate','cPortfolio']:['bName','bIndustry','bWebsite','bContact','bBudget','bNiche','bReach','bGoal','bBrief'];
+    if(!profileComplete(ids)){alert('Please complete all profile details before entering the dashboard.');return;}
+    const p=pending();
+    if(!p){alert('Please create an account first.');safeShow('signup');return;}
+    const accounts=readAccounts();
+    const old=accounts[p.email]||{};
+    accounts[p.email]={name:p.name,email:p.email,password:p.password,role,profile:role==='creator'?{
+      displayName:val('cDisplay'),niche:val('cNiche'),social:val('cSocial'),followers:num(val('cFollowers')),reportedReach:num(val('cReach')),audience:val('cAudience'),collabType:val('cType'),rate:val('cRate'),portfolio:val('cPortfolio')
+    }:{
+      name:val('bName'),industry:val('bIndustry'),website:val('bWebsite'),contact:val('bContact'),budget:val('bBudget'),creatorNiche:val('bNiche'),creatorReach:val('bReach'),goal:val('bGoal'),brief:val('bBrief')
+    },createdAt:old.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};
+    writeAccounts(accounts);localStorage.setItem('lajvioraEmail',p.email);localStorage.setItem('lajvioraRole',role);localStorage.setItem('lajvioraProfileComplete','1');localStorage.removeItem('lajvioraPending');
+    renderWorkspace(role);safeShow(role==='creator'?'creatorWorkspace':'brandWorkspace');
+  };
+
+  window.signInDemo=function(){
+    const email=val('loginEmail').toLowerCase(),password=val('loginPassword');
+    if(!email||!password){alert('Enter your email and password first.');return;}
+    const account=readAccounts()[email];
+    if(!account){alert('No LAJVIORA account found for this email. Create an account first.');return;}
+    if(account.password!==password){alert('The email or password is incorrect.');return;}
+    localStorage.setItem('lajvioraEmail',email);localStorage.setItem('lajvioraRole',account.role);localStorage.setItem('lajvioraProfileComplete',account.profile?'1':'0');
+    if(account.profile){
+      renderWorkspace(account.role);safeShow(account.role==='creator'?'creatorWorkspace':'brandWorkspace');
+    }else{safeShow(account.role==='creator'?'creator':'brand');}
+  };
+
+  window.logout=function(){localStorage.removeItem('lajvioraEmail');localStorage.removeItem('lajvioraRole');localStorage.removeItem('lajvioraProfileComplete');localStorage.removeItem('lajvioraPending');safeShow('auth')};
+
+  window.googleDemo=function(){
+    const email=(val('signupEmail')||val('loginEmail')||localStorage.getItem('lajvioraEmail')||'').toLowerCase();
+    const old=document.querySelector('.google-picker');if(old)old.remove();
+    const modal=document.createElement('div');modal.className='google-picker';modal.innerHTML='<div class="google-modal"><div class="google-modal-top"><div class="google-g">G</div><h3>Continue with Google</h3><p>Google can only show the real signed-in Gmail after Google OAuth is connected.</p></div><div class="google-account" style="cursor:default"><div class="google-avatar">G</div><div><strong>'+(esc(email)||'No Gmail selected')+'</strong><span>'+(email?'Email entered on this page':'Choose an account after OAuth is configured')+'</span></div></div><button class="google-other" onclick="closeGoogleNotice()">Continue securely with Google OAuth</button><div class="google-foot">This static GitHub Pages build cannot access your browser's Google account by itself.</div></div>';modal.addEventListener('click',e=>{if(e.target===modal)modal.remove()});document.body.appendChild(modal);
+  };
+  window.closeGoogleNotice=function(){const p=document.querySelector('.google-picker');if(p)p.remove();alert('Real Google sign-in needs a Google OAuth client and a backend authentication service. I have left the button ready for that connection instead of pretending it created a real account.');};
+
+  function creatorData(){const a=readAccounts()[localStorage.getItem('lajvioraEmail')]||{};return a.profile||{}}
+  function brandData(){const a=readAccounts()[localStorage.getItem('lajvioraEmail')]||{};return a.profile||{}}
+  function profileStrength(role){
+    const d=role==='creator'?creatorData():brandData();
+    if(!d||!Object.keys(d).length)return 0;
+    const fields=Object.values(d),filled=fields.filter(v=>v!==''&&v!==0).length;return Math.round((filled/fields.length)*100);
+  }
+  window.renderWorkspace=function(role){
+    const el=document.getElementById(role==='creator'?'creatorWorkspace':'brandWorkspace');
+    const d=role==='creator'?creatorData():brandData();
+    const email=localStorage.getItem('lajvioraEmail')||'';const account=readAccounts()[email]||{};const strength=profileStrength(role);
+    const tabs=role==='creator'?['overview','profile','matches','applications','messages','analytics','settings']:['overview','campaigns','creators','shortlist','applications','messages','analytics','settings'];
+    const labels={overview:'Overview',profile:'My Profile',matches:'Matches',applications:'Applications',messages:'Messages',analytics:'Analytics',settings:'Settings',campaigns:'Campaigns',creators:'Find Creators',shortlist:'Shortlist'};
+    const nav=tabs.map((t,i)=>'<button class="ws-btn'+(i===0?' active':'')+'" onclick="wsTab(\''+role+'\',\''+t+'\',this)">'+labels[t]+'</button>').join('');
+    const display=role==='creator'?(d.displayName||account.name||'Creator'):(d.name||account.name||'Brand');
+    el.innerHTML='<div class="workspace"><aside class="workspace-side"><div class="ws-title">LAJVIORA</div><div class="ws-label">'+(role==='creator'?'CREATOR WORKSPACE':'BRAND WORKSPACE')+'</div>'+nav+'<button class="ws-btn" style="margin-top:35px" onclick="logout()">Log out</button></aside><div class="workspace-main" id="'+role+'Main"></div></div>';
+    wsTab(role,'overview',el.querySelector('.ws-btn'));el.dataset.display=display;
+  };
+
+  window.wsTab=function(role,tab,button){
+    const email=localStorage.getItem('lajvioraEmail')||'';const a=readAccounts()[email]||{};const d=a.profile||{};const main=document.getElementById(role+'Main');if(!main)return;
+    const name=role==='creator'?(d.displayName||a.name||'Creator'):(d.name||a.name||'Brand');
+    const strength=profileStrength(role);const followers=role==='creator'?num(d.followers):0;const liveReach=0;const matches=0;const applications=0;const campaigns=0;
+    const data={
+      creator:{overview:['CREATOR OVERVIEW','Welcome, '+esc(name)+'.','Your dashboard now shows verified/live values only; unconnected social metrics stay at zero.',['Profile completion · '+strength+'%','Live matches · 0','Applications · 0','Live reach · 0']],profile:['MY PROFILE','Your creator profile.','Account details saved on this device. Live social metrics require an authenticated platform connection.',['Niche · '+esc(d.niche||'Not set'),'Followers entered · '+(followers?followers.toLocaleString():'0'),'Live reach · 0','Social API · Not connected']],matches:['MATCHES','No live matches yet.','Matches appear only after campaign and creator data exist in the live matching system.',['Live matches · 0','Verified creator data · '+(d.social?'Profile added':'Not connected'),'Campaigns available · 0','Status · Waiting for live data']],applications:['APPLICATIONS','No applications yet.','Applications are created only from real campaigns.',['Pending · 0','In conversation · 0','Completed · 0','Total · 0']],messages:['MESSAGES','No live messages yet.','Messages will appear here after a real brand or creator conversation exists.',['Unread · 0','Active conversations · 0','New inquiries · 0']],analytics:['ANALYTICS','Live creator analytics.','No analytics are fabricated before a platform connection is available.',['Live reach · 0','Live views · 0','Live engagement · 0%','Verified data points · 0']],settings:['SETTINGS','Account & profile settings.','Your current account and profile status.',['Account · Created','Profile · '+strength+'% complete','Social API · Not connected','Email · '+esc(email)]]},
+      brand:{overview:['BRAND OVERVIEW','Welcome, '+esc(name)+'.','Your dashboard shows live campaign data only; no sample creators or match counts are shown.',['Live campaigns · 0','Live creator matches · 0','Shortlisted · 0','Applications · 0']],campaigns:['CAMPAIGNS','No live campaigns yet.','Create a campaign in the live backend before creator matching can begin.',['Active · 0','Draft · 0','Completed · 0','Total · 0']],creators:['FIND CREATORS','No live creator data yet.','Creator discovery stays empty until real creator profiles and verified social data are connected.',['Creators found · 0','Verified matches · 0','Search results · 0','Status · Waiting for live data']],shortlist:['SHORTLIST','Your shortlist is empty.','Creators appear here only after a real profile is matched and saved.',['Shortlisted · 0','Contacted · 0','Awaiting response · 0']],applications:['APPLICATIONS','No live applications yet.','Applications are created only by real creator submissions.',['New · 0','In review · 0','Accepted · 0','Pending · 0']],messages:['MESSAGES','No live messages yet.','Messages will appear after a real collaboration thread exists.',['Unread · 0','Active threads · 0','Campaign updates · 0']],analytics:['ANALYTICS','Live campaign analytics.','No sample performance numbers are shown before real campaign activity exists.',['Response rate · 0%','Matched creators · 0','Shortlisted · 0','Active campaigns · 0']],settings:['SETTINGS','Brand workspace settings.','Your business profile and live-data status.',['Account · Created','Profile · '+profileStrength('brand')+'% complete','Campaign API · Not connected','Email · '+esc(email)]]}
+    };
+    const r=data[role],x=r[tab]||r.overview;
+    main.innerHTML='<div class="ws-kicker">'+x[0]+'</div><h2 style="font-size:34px;margin:8px 0 7px">'+x[1]+'</h2><p style="color:var(--muted);line-height:1.7;margin:0;max-width:780px">'+x[2]+'</p><div class="ws-metrics">'+x[3].map(v=>'<div class="card ws-metric"><small>LIVE DATA</small><strong>'+v+'</strong></div>').join('')+'</div><div class="ws-panels"><div class="card"><strong>Current data status</strong><div class="ws-list" style="margin-top:14px"><div class="ws-item">Sample metrics removed.</div><div class="ws-item">No live matches are invented.</div><div class="ws-item">Social reach/views stay at 0 until an authenticated API connection exists.</div></div></div><div class="card"><strong>Profile / account</strong><p style="color:var(--muted);line-height:1.7;margin-bottom:0">Signed in as <b>'+esc(email)+'</b>. Profile completion: <b>'+strength+'%</b>.</p></div></div>';
+    const root=document.getElementById(role+'Workspace');if(root)root.querySelectorAll('.ws-btn').forEach(x=>x.classList.remove('active'));if(button)button.classList.add('active');
+  };
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* LAJVIORA — real Supabase authentication/data mode. */
+/* LAJVIORA live Supabase auth, profiles and dashboard data. */
 (function(){
   const SUPABASE_URL='https://rixawxkhxqodjfozztzl.supabase.co';
-  const SUPABASE_KEY='sb_publishable_Cip9g0w8I5ZtTWtQxxrkqg_ubduOJ4F';
+  const SUPABASE_KEY='sb_publishable_Cip9g0w8I5ZtTWqg_ubduOJ4F';
   let sb=null;
   const $=id=>document.getElementById(id);
   const val=id=>(($(id)||{}).value||'').trim();
   const esc=s=>String(s??'').replace(/[&<>\"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[m]));
   const num=s=>Number(String(s||'').replace(/[^0-9.]/g,''))||0;
-
-  async function getUser(){
-    const r=await sb.auth.getUser();
-    return r.data?.user||null;
-  }
-
-  async function getProfile(uid){
-    const r=await sb.from('profiles').select('id,role,display_name').eq('id',uid).maybeSingle();
-    if(r.error) throw r.error;
-    return r.data;
-  }
-
-  async function tableCount(table,column,value){
-    let q=sb.from(table).select('id',{count:'exact',head:true});
-    if(column) q=q.eq(column,value);
-    const r=await q;
-    if(r.error) throw r.error;
-    return r.count||0;
-  }
-
-  async function routeAuthenticatedUser(user){
-    const profile=await getProfile(user.id);
-    if(profile?.role){
-      localStorage.setItem('lajvioraRole',profile.role);
-      await renderWorkspace(profile.role);
-      showPortal(profile.role==='creator'?'creatorWorkspace':'brandWorkspace');
-    }else{
-      showPortal('role');
-    }
-  }
-
-  window.nextRole=async function(){
-    const name=val('signupName');
-    const email=val('signupEmail').toLowerCase();
-    const password=val('signupPassword');
-    if(!name||!email||password.length<6){
-      alert('Please complete your name, email and a 6+ character password.');
-      return;
-    }
-    const r=await sb.auth.signUp({email,password,options:{data:{full_name:name}}});
-    if(r.error){alert(r.error.message);return}
-    localStorage.setItem('lajvioraPendingName',name);
-    if(r.data.session){
-      showPortal('role');
-    }else{
-      alert('Account created. Please confirm your email, then sign in.');
-      showPortal('login');
-    }
-  };
-
-  window.signInDemo=async function(){
-    const email=val('loginEmail').toLowerCase();
-    const password=val('loginPassword');
-    if(!email||!password){alert('Enter your email and password.');return}
-    const r=await sb.auth.signInWithPassword({email,password});
-    if(r.error){alert(r.error.message);return}
-    await routeAuthenticatedUser(r.data.user);
-  };
-
-  window.googleDemo=async function(){
-    const r=await sb.auth.signInWithOAuth({
-      provider:'google',
-      options:{redirectTo:window.location.origin+window.location.pathname}
-    });
-    if(r.error)alert(r.error.message);
-  };
-
-  window.chooseRole=async function(role){
-    const user=await getUser();
-    if(!user){alert('Please sign in first.');showPortal('login');return}
-    localStorage.setItem('lajvioraRole',role);
-    showPortal(role==='creator'?'creator':'brand');
-  };
-
-  window.enterWorkspace=async function(role){
-    const user=await getUser();
-    if(!user){alert('Please sign in first.');showPortal('login');return}
-    const ids=role==='creator'
-      ?['cDisplay','cNiche','cSocial','cFollowers','cReach','cAudience','cType','cRate','cPortfolio']
-      :['bName','bIndustry','bWebsite','bContact','bBudget','bNiche','bReach','bGoal','bBrief'];
-    if(ids.some(id=>!val(id))){
-      alert('Please complete all profile details before entering the dashboard.');
-      return;
-    }
-    let r=await sb.from('profiles').upsert({
-      id:user.id,
-      role,
-      display_name:role==='creator'?val('cDisplay'):val('bName'),
-      updated_at:new Date().toISOString()
-    });
-    if(r.error){alert(r.error.message);return}
-
-    const payload=role==='creator'
-      ?{
-        user_id:user.id,
-        niche:val('cNiche'),
-        social_url:val('cSocial'),
-        followers:num(val('cFollowers')),
-        average_reach:num(val('cReach')),
-        audience_location:val('cAudience'),
-        collaboration_type:val('cType'),
-        typical_rate:val('cRate'),
-        portfolio:val('cPortfolio'),
-        updated_at:new Date().toISOString()
-      }
-      :{
-        user_id:user.id,
-        brand_name:val('bName'),
-        industry:val('bIndustry'),
-        website_or_social:val('bWebsite'),
-        contact_name:val('bContact'),
-        typical_budget:val('bBudget'),
-        creator_niche:val('bNiche'),
-        preferred_creator_reach:val('bReach'),
-        campaign_goal:val('bGoal'),
-        campaign_brief:val('bBrief'),
-        updated_at:new Date().toISOString()
-      };
-
-    r=await sb.from(role==='creator'?'creator_profiles':'brand_profiles').upsert(payload);
-    if(r.error){alert(r.error.message);return}
-    localStorage.removeItem('lajvioraPendingName');
-    localStorage.setItem('lajvioraRole',role);
-    await renderWorkspace(role);
-    showPortal(role==='creator'?'creatorWorkspace':'brandWorkspace');
-  };
-
-  window.logout=async function(){
-    await sb.auth.signOut();
-    localStorage.removeItem('lajvioraRole');
-    localStorage.removeItem('lajvioraPendingName');
-    showPortal('auth');
-  };
-
-  window.renderWorkspace=async function(role){
-    const user=await getUser();
-    if(!user)return;
-    const el=$(role==='creator'?'creatorWorkspace':'brandWorkspace');
-    const tabs=role==='creator'
-      ?['overview','profile','matches','applications','messages','analytics','settings']
-      :['overview','campaigns','creators','shortlist','applications','messages','analytics','settings'];
-    const labels={overview:'Overview',profile:'My Profile',matches:'Matches',applications:'Applications',messages:'Messages',analytics:'Analytics',settings:'Settings',campaigns:'Campaigns',creators:'Find Creators',shortlist:'Shortlist'};
-    const nav=tabs.map((t,i)=>'<button class="ws-btn'+(i===0?' active':'')+'" data-ws-tab="'+t+'">'+labels[t]+'</button>').join('');
-    el.innerHTML='<div class="workspace"><aside class="workspace-side"><div class="ws-title">LAJVIORA</div><div class="ws-label">'+(role==='creator'?'CREATOR WORKSPACE':'BRAND WORKSPACE')+'</div>'+nav+'<button class="ws-btn" style="margin-top:35px" onclick="logout()">Log out</button></aside><div class="workspace-main" id="'+role+'Main"></div></div>';
-    el.querySelectorAll('.ws-btn[data-ws-tab]').forEach(btn=>btn.addEventListener('click',()=>wsTab(role,btn.dataset.wsTab,btn)));
-    await wsTab(role,'overview',el.querySelector('.ws-btn[data-ws-tab="overview"]'));
-  };
-
-  window.wsTab=async function(role,tab,button){
-    const user=await getUser();
-    if(!user)return;
-    const profile=await getProfile(user.id);
-    if(!profile){showPortal('role');return}
-    const isCreator=role==='creator';
-    let first=0,second=0,connections=0;
-    if(isCreator){
-      [first,second,connections]=await Promise.all([
-        tableCount('matches','creator_id',user.id),
-        tableCount('applications','creator_id',user.id),
-        tableCount('social_connections','user_id',user.id)
-      ]);
-    }else{
-      first=await tableCount('campaigns','brand_id',user.id);
-      const r=await sb.from('campaigns').select('id',{count:'exact',head:true}).eq('brand_id',user.id).eq('status','active');
-      if(!r.error)second=r.count||0;
-    }
-    const titles={overview:isCreator?'Creator overview':'Brand overview',profile:'Your profile',matches:'Live matches',applications:'Live applications',messages:'Live messages',analytics:'Live analytics',settings:'Account settings',campaigns:'Live campaigns',creators:'Find creators',shortlist:'Live shortlist'};
-    const main=$(role+'Main');
-    const metrics=isCreator
-      ?['Live matches · '+first,'Applications · '+second,'Verified reach · 0','Social connections · '+connections]
-      :['Campaigns · '+first,'Active campaigns · '+second,'Creator matches · 0','Applications · 0'];
-    main.innerHTML='<div class="ws-kicker">LIVE DATA</div><h2 style="font-size:34px;margin:8px 0 7px">'+titles[tab]+'</h2><p style="color:var(--muted);line-height:1.7;margin:0;max-width:780px">Only authenticated database records are shown. No sample creators, fake reach or invented matches are displayed.</p><div class="ws-metrics">'+metrics.map(x=>'<div class="card ws-metric"><small>DATABASE</small><strong>'+x+'</strong></div>').join('')+'</div><div class="ws-panels"><div class="card"><strong>Current data</strong><div class="ws-list" style="margin-top:14px"><div class="ws-item">Authentication · Supabase</div><div class="ws-item">Database · Connected</div><div class="ws-item">Sample metrics · Disabled</div></div></div><div class="card"><strong>Social metrics</strong><p style="color:var(--muted);line-height:1.7;margin-bottom:0">Reach, views and engagement remain <b>0</b> until an official supported social platform is connected and authorized.</p></div></div>';
-    const root=$(isCreator?'creatorWorkspace':'brandWorkspace');
-    root.querySelectorAll('.ws-btn').forEach(x=>x.classList.remove('active'));
-    if(button)button.classList.add('active');
-  };
-
-  async function init(){
-    sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-    const hero=document.querySelector('.hero-card .dash');
-    if(hero)hero.innerHTML='<div class="dash-top"><strong>Live platform data</strong><span class="mini">No demo metrics</span></div><div class="campaign" style="padding:28px;text-align:center"><div class="pill">LIVE MODE</div><h3 style="font-size:19px;margin:13px 0 7px">Real campaigns will appear here.</h3><p>No sample campaigns, creator metrics or matches are shown.</p></div>';
-    const dashboard=$('dashboard');
-    if(dashboard)dashboard.innerHTML='<div class="wrap"><div class="section-head"><h2>Live workspace</h2><p>No sample counts, fake matches or invented reach are shown. Live data appears only after authenticated records exist.</p></div></div>';
-    const r=await sb.auth.getSession();
-    if(r.data.session)await routeAuthenticatedUser(r.data.session.user);
-    sb.auth.onAuthStateChange(async(event,session)=>{
-      if(event==='SIGNED_IN'&&session)await routeAuthenticatedUser(session.user);
-      if(event==='SIGNED_OUT')showPortal('auth');
-    });
-  }
-
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  async function getUser(){const r=await sb.auth.getUser();return r.data?.user||null}
+  async function getProfile(uid){const r=await sb.from('profiles').select('id,role,display_name').eq('id',uid).maybeSingle();if(r.error)throw r.error;return r.data}
+  async function countRows(table,column,value){let q=sb.from(table).select('id',{count:'exact',head:true});if(column)q=q.eq(column,value);const r=await q;return r.error?0:(r.count||0)}
+  function show(step){document.querySelector('main#top').style.display='none';document.querySelector('footer').style.display='none';document.getElementById('portalPage').style.display='block';document.querySelectorAll('.portal-step').forEach(x=>x.style.display='none');const el=document.getElementById(step==='auth'?'portalAuth':'portal'+step.charAt(0).toUpperCase()+step.slice(1));if(el)el.style.display='block';window.scrollTo(0,0)}
+  window.showPortal=show;window.openPortal=show;
+  window.backHome=function(){document.getElementById('portalPage').style.display='none';document.querySelector('main#top').style.display='block';document.querySelector('footer').style.display='block';window.scrollTo(0,0)};
+  async function route(user){const p=await getProfile(user.id);if(p?.role){localStorage.setItem('lajvioraRole',p.role);await renderWorkspace(p.role);show(p.role==='creator'?'creatorWorkspace':'brandWorkspace')}else show('role')}
+  window.nextRole=async function(){const name=val('signupName'),email=val('signupEmail').toLowerCase(),password=val('signupPassword');if(!name||!email||password.length<6){alert('Please complete your name, email and a 6+ character password.');return}const r=await sb.auth.signUp({email,password,options:{data:{full_name:name}}});if(r.error){alert(r.error.message);return}localStorage.setItem('lajvioraPendingName',name);if(r.data.session)show('role');else{alert('Account created. Please confirm your email, then sign in.');show('login')}};
+  window.signInDemo=async function(){const email=val('loginEmail').toLowerCase(),password=val('loginPassword');if(!email||!password){alert('Enter your email and password.');return}const r=await sb.auth.signInWithPassword({email,password});if(r.error){alert(r.error.message);return}await route(r.data.user)};
+  window.googleDemo=async function(){const r=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+window.location.pathname}});if(r.error)alert(r.error.message)};
+  window.chooseRole=async function(role){const u=await getUser();if(!u){alert('Please sign in first.');show('login');return}localStorage.setItem('lajvioraRole',role);show(role==='creator'?'creator':'brand')};
+  window.enterWorkspace=async function(role){const u=await getUser();if(!u){alert('Please sign in first.');show('login');return}const ids=role==='creator'?['cDisplay','cNiche','cSocial','cFollowers','cReach','cAudience','cType','cRate','cPortfolio']:['bName','bIndustry','bWebsite','bContact','bBudget','bNiche','bReach','bGoal','bBrief'];if(ids.some(id=>!val(id))){alert('Please complete all profile details before entering the dashboard.');return}let r=await sb.from('profiles').upsert({id:u.id,role,display_name:role==='creator'?val('cDisplay'):val('bName'),updated_at:new Date().toISOString()});if(r.error){alert(r.error.message);return}const payload=role==='creator'?{user_id:u.id,niche:val('cNiche'),social_url:val('cSocial'),followers:num(val('cFollowers')),average_reach:num(val('cReach')),audience_location:val('cAudience'),collaboration_type:val('cType'),typical_rate:val('cRate'),portfolio:val('cPortfolio'),updated_at:new Date().toISOString()}:{user_id:u.id,brand_name:val('bName'),industry:val('bIndustry'),website_or_social:val('bWebsite'),contact_name:val('bContact'),typical_budget:val('bBudget'),creator_niche:val('bNiche'),preferred_creator_reach:val('bReach'),campaign_goal:val('bGoal'),campaign_brief:val('bBrief'),updated_at:new Date().toISOString()};r=await sb.from(role==='creator'?'creator_profiles':'brand_profiles').upsert(payload);if(r.error){alert(r.error.message);return}localStorage.removeItem('lajvioraPendingName');localStorage.setItem('lajvioraRole',role);await renderWorkspace(role);show(role==='creator'?'creatorWorkspace':'brandWorkspace')};
+  window.logout=async function(){await sb.auth.signOut();localStorage.removeItem('lajvioraRole');localStorage.removeItem('lajvioraPendingName');show('auth')};
+  async function getRoleData(role,uid){const r=await sb.from(role==='creator'?'creator_profiles':'brand_profiles').select('*').eq('user_id',uid).maybeSingle();if(r.error)throw r.error;return r.data||{}}
+  async function renderWorkspace(role){const u=await getUser();if(!u)return;const el=$(role==='creator'?'creatorWorkspace':'brandWorkspace');const tabs=role==='creator'?['overview','profile','matches','applications','messages','analytics','settings']:['overview','campaigns','creators','shortlist','applications','messages','analytics','settings'];const labels={overview:'Overview',profile:'My Profile',matches:'Matches',applications:'Applications',messages:'Messages',analytics:'Analytics',settings:'Settings',campaigns:'Campaigns',creators:'Find Creators',shortlist:'Shortlist'};const nav=tabs.map((t,i)=>'<button class="ws-btn'+(i===0?' active':'')+'" data-tab="'+t+'">'+labels[t]+'</button>').join('');el.innerHTML='<div class="workspace"><aside class="workspace-side"><div class="ws-title">LAJVIORA</div><div class="ws-label">'+(role==='creator'?'CREATOR WORKSPACE':'BRAND WORKSPACE')+'</div>'+nav+'<button class="ws-btn" style="margin-top:35px" onclick="logout()">Log out</button></aside><div class="workspace-main" id="'+role+'Main"></div></div>';el.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>wsTab(role,b.dataset.tab,b)));await wsTab(role,'overview',el.querySelector('[data-tab="overview"]'))}
+  window.renderWorkspace=renderWorkspace;
+  window.wsTab=async function(role,tab,button){const u=await getUser();if(!u)return;const d=await getRoleData(role,u.id);const main=$(role+'Main');const isCreator=role==='creator';let metrics,title;if(isCreator){const [matches,applications,connections]=await Promise.all([countRows('matches','creator_id',u.id),countRows('applications','creator_id',u.id),countRows('social_connections','user_id',u.id)]);title={overview:'Creator overview',profile:'Your profile',matches:'Live matches',applications:'Live applications',messages:'Live messages',analytics:'Live analytics',settings:'Account settings'}[tab]||'Creator overview';metrics=tab==='profile'?['Niche · '+esc(d.niche||'Not set'),'Followers · '+(num(d.followers)?num(d.followers).toLocaleString():'0'),'Average reach entered · '+(num(d.average_reach)?num(d.average_reach).toLocaleString():'0'),'Social connections · '+connections]:tab==='analytics'?['Verified reach · 0','Verified views · 0','Verified engagement · 0%','Social connections · '+connections]:['Live matches · '+matches,'Applications · '+applications,'Social connections · '+connections,'Verified reach · 0']}else{const campaigns=await countRows('campaigns','brand_id',u.id);const activeRes=await sb.from('campaigns').select('id',{count:'exact',head:true}).eq('brand_id',u.id).eq('status','active');const active=activeRes.error?0:(activeRes.count||0);title={overview:'Brand overview',campaigns:'Live campaigns',creators:'Find creators',shortlist:'Live shortlist',applications:'Live applications',messages:'Live messages',analytics:'Live analytics',settings:'Account settings'}[tab]||'Brand overview';metrics=tab==='campaigns'?['Total campaigns · '+campaigns,'Active campaigns · '+active,'Creator matches · 0','Applications · 0']:tab==='creators'?['Creator profiles · '+await countRows('creator_profiles',null,null),'Verified matches · 0','Shortlisted · 0','Applications · 0']:['Live campaigns · '+campaigns,'Active campaigns · '+active,'Creator matches · 0','Applications · 0']}main.innerHTML='<div class="ws-kicker">LIVE DATA</div><h2 style="font-size:34px;margin:8px 0 7px">'+title+'</h2><p style="color:var(--muted);line-height:1.7;margin:0;max-width:780px">Only authenticated Supabase records are shown. No sample creators, fake reach or invented match counts are displayed.</p><div class="ws-metrics">'+metrics.map(v=>'<div class="card ws-metric"><small>DATABASE</small><strong>'+v+'</strong></div>').join('')+'</div><div class="ws-panels"><div class="card"><strong>Live data status</strong><div class="ws-list" style="margin-top:14px"><div class="ws-item">Authentication · Supabase</div><div class="ws-item">Database · Connected</div><div class="ws-item">Sample metrics · Disabled</div></div></div><div class="card"><strong>Verified social metrics</strong><p style="color:var(--muted);line-height:1.7;margin-bottom:0">Reach, views and engagement remain <b>0</b> until an official supported social platform is connected and authorized.</p></div></div>';document.querySelectorAll('#'+(isCreator?'creatorWorkspace':'brandWorkspace')+' .ws-btn').forEach(x=>x.classList.remove('active'));if(button)button.classList.add('active')};
+  const hero=document.querySelector('.hero-card .dash');if(hero)hero.innerHTML='<div class="dash-top"><strong>Live platform data</strong><span class="mini">No demo metrics</span></div><div class="campaign" style="padding:28px;text-align:center"><div class="pill">LIVE MODE</div><h3 style="font-size:19px;margin:13px 0 7px">Real campaigns will appear here.</h3><p>No sample campaigns, creator metrics or matches are shown.</p></div>';
+  const dashboard=document.getElementById('dashboard');if(dashboard)dashboard.style.display='none';
+  sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  sb.auth.getSession().then(async r=>{if(r.data?.session)await route(r.data.session.user)});
+  sb.auth.onAuthStateChange(async(event,session)=>{if(event==='SIGNED_IN'&&session)await route(session.user);if(event==='SIGNED_OUT')show('auth')});
 })();
 </script>
-</body></html>
+</div></body></html>
