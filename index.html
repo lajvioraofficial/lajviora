@@ -15,6 +15,52 @@ nav{height:78px;display:flex;align-items:center;justify-content:space-between;bo
 .strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0;color:var(--muted);font-size:13px}.strip .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.strip strong{color:var(--text)}section{padding:100px 0}.section-head{text-align:center;max-width:720px;margin:0 auto 46px}.section-head h2{font-size:42px;letter-spacing:-1.8px;margin:0 0 13px}.section-head p{color:var(--muted);line-height:1.7}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:29px;box-shadow:0 10px 35px rgba(30,20,55,.035)}.icon{width:44px;height:44px;border-radius:14px;background:var(--surface2);display:grid;place-items:center;color:var(--accent);font-weight:900;margin-bottom:21px}.card h3{margin:0 0 9px;font-size:18px}.card p{margin:0;color:var(--muted);line-height:1.65;font-size:14px}.split{display:grid;grid-template-columns:1fr 1fr;gap:20px}.panel{border:1px solid var(--line);border-radius:27px;padding:36px;background:var(--surface);box-shadow:0 10px 35px rgba(30,20,55,.035)}.panel h3{font-size:28px;margin:0 0 10px}.panel p{color:var(--muted);line-height:1.65}.list{padding:0;margin:25px 0 0;list-style:none;display:grid;gap:14px}.list li{display:flex;gap:10px;align-items:flex-start;font-size:14px}.check{color:var(--accent);font-weight:900}.cta{padding:62px 30px;border-radius:30px;background:linear-gradient(135deg,#211a31,#3a2c60);color:white;text-align:center;box-shadow:0 24px 60px rgba(48,31,86,.18)}.cta h2{font-size:44px;letter-spacing:-1.8px;margin:0 0 12px}.cta p{color:#d8d2e3;max-width:600px;margin:0 auto 26px;line-height:1.65}.cta .secondary{background:white;border:0;color:#17151d}footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted);font-size:12px}footer .wrap{display:flex;justify-content:space-between}
 @media(max-width:850px){.hero{grid-template-columns:1fr;gap:40px;padding-top:60px}.links{display:none}.grid,.split{grid-template-columns:1fr}h1{letter-spacing:-2px}.section-head h2,.cta h2{font-size:32px}}
 </style>
+<style id="lajviora-premium-v2">
+:root{color-scheme:light;--bg:#f4f0e8;--surface:#fffdf8;--surface2:#ece6da;--text:#181713;--muted:#746f66;--line:#ddd5c8;--accent:#b2874f;--accent2:#e1c48d;--dark:#181713;--shadow:0 28px 80px rgba(44,35,24,.12)}
+*{scrollbar-color:#c4a06c #eee9df;scrollbar-width:thin}
+body{background:radial-gradient(circle at 15% 8%,rgba(226,195,145,.24),transparent 28%),radial-gradient(circle at 90% 20%,rgba(255,255,255,.9),transparent 30%),var(--bg);letter-spacing:.005em}
+#app{background:transparent}
+header{position:sticky;top:0;z-index:100;background:rgba(244,240,232,.78);backdrop-filter:blur(18px);border-bottom:1px solid rgba(221,213,200,.8)}
+nav{height:82px;border-bottom:0}
+.brand-wrap{padding:6px 0}.brand{font-size:20px;letter-spacing:2px}.brand-sub{font-size:8px;letter-spacing:.28px}
+.mark{width:46px;height:46px;border-radius:15px;background:linear-gradient(145deg,#14130f,#3a3021);border-color:rgba(225,196,141,.72);box-shadow:0 12px 28px rgba(33,31,27,.2),inset 0 0 0 1px rgba(255,255,255,.08)}
+.links{gap:30px;font-weight:650}.links a{position:relative}.links a:after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:1px;background:var(--accent);transform:scaleX(0);transform-origin:center;transition:.25s}.links a:hover:after{transform:scaleX(1)}
+.navcta{padding:11px 17px;border:1px solid #c9b89c;border-radius:999px;background:rgba(255,253,248,.72);box-shadow:0 8px 22px rgba(44,35,24,.06)}
+.hero{min-height:720px;padding:78px 0 105px;gap:74px;position:relative}
+.hero:before{content:"";position:absolute;width:330px;height:330px;border-radius:50%;background:radial-gradient(circle,rgba(199,160,101,.22),transparent 68%);left:-130px;top:20px;pointer-events:none}
+.eyebrow{background:rgba(255,253,248,.72);border-color:#dbcdb8;box-shadow:0 8px 24px rgba(44,35,24,.04);letter-spacing:1px}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(58px,7.2vw,92px);line-height:.92;letter-spacing:-4.8px;margin:26px 0 24px}
+h1 span{background:linear-gradient(95deg,#87643a,#c79b5c 46%,#8f6c3f);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:18px;line-height:1.8;max-width:600px}
+.actions{margin-top:36px;gap:12px}.btn{border-radius:999px;padding:15px 22px;transition:transform .2s,box-shadow .2s,border-color .2s}.btn:hover{transform:translateY(-2px)}
+.primary{background:linear-gradient(135deg,#1b1915,#3a3024);box-shadow:0 16px 30px rgba(34,28,20,.16)}.secondary{border-color:#d3c6b2;background:rgba(255,253,248,.72)}
+.hero-card{border-radius:34px;padding:14px;background:rgba(255,253,248,.68);border-color:#d9cfbf;box-shadow:0 35px 90px rgba(44,35,24,.14);transform:rotate(.6deg)}
+.hero-card:before{content:"";display:block;height:5px;width:74px;border-radius:99px;background:linear-gradient(90deg,#a9824c,#e4c78f);margin:7px auto 13px}
+.dash{border-color:#e0d7c8;border-radius:25px;background:linear-gradient(180deg,#fffefa,#f8f3ea)}
+.dash-top{padding:20px 21px;border-color:#e7dfd3;background:rgba(255,255,255,.55)}
+.mini{font-weight:700;color:#9a7647}.campaign{padding:21px;border-color:#e7dfd3}.campaign:hover{background:#fffdf9}
+.pill{background:#efe5d6;border:1px solid #dfcfb8;color:#8d683c;letter-spacing:.8px}
+.bar{background:#ece4d8}.bar i{background:linear-gradient(90deg,#9d7646,#d9b978)}
+.strip{background:rgba(255,253,248,.55);border-color:#ddd4c6}.strip .wrap{font-weight:600}.strip strong{color:#30291f}
+section{padding:110px 0}.section-head{max-width:760px;margin-bottom:52px}.section-head h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(36px,4vw,52px);letter-spacing:-2.2px}
+.grid{gap:18px}.card{border-radius:24px;border-color:#ded5c7;background:rgba(255,253,248,.82);box-shadow:0 16px 45px rgba(44,35,24,.055);transition:transform .22s,box-shadow .22s,border-color .22s}.card:hover{transform:translateY(-4px);box-shadow:0 22px 55px rgba(44,35,24,.10);border-color:#cdbb9f}
+.icon{border-radius:15px;background:linear-gradient(145deg,#eee5d7,#f9f5ed);border:1px solid #e0d4c2}
+.panel{border-radius:27px;border-color:#ded5c7;background:linear-gradient(145deg,rgba(255,253,248,.92),rgba(247,240,229,.88));box-shadow:0 18px 52px rgba(44,35,24,.06)}
+#join .card{background:linear-gradient(145deg,#fffdf8,#efe6d7);border-color:#d8c8ad}
+.portal-shell{background:radial-gradient(circle at 50% 0%,rgba(225,196,141,.20),transparent 32%),radial-gradient(circle at 90% 100%,rgba(255,255,255,.8),transparent 28%),var(--bg);padding-top:34px}
+.portal-head{padding-bottom:20px;border-bottom:1px solid rgba(221,213,200,.8);margin-bottom:40px}
+.portal-card{border-radius:30px;border-color:#ddd3c3;background:rgba(255,253,248,.9);box-shadow:0 30px 80px rgba(44,35,24,.11);padding:38px}
+.portal-card h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(34px,4vw,46px);letter-spacing:-1.8px}
+.portal-card input,.portal-card textarea{border-color:#ddd2c0;background:#fffdf8;border-radius:15px;padding:15px 16px;box-shadow:0 7px 22px rgba(44,35,24,.035)}
+.portal-card input:focus,.portal-card textarea:focus{border-color:#b78b52;box-shadow:0 0 0 4px rgba(183,139,82,.12)}
+.role-card{min-height:235px}.role-card strong{color:#8e693d}
+.workspace{border-radius:30px;border-color:#d8cec0;box-shadow:0 35px 90px rgba(44,35,24,.13)}
+.workspace-side{background:linear-gradient(180deg,#191713,#272117);padding:28px 17px}.workspace-side .ws-title{letter-spacing:2.5px}.ws-btn{border-radius:12px}.ws-btn.active,.ws-btn:hover{background:rgba(225,196,141,.13);color:#fff7e9}.workspace-main{padding:38px}
+.ws-metric{background:linear-gradient(145deg,#fffdf8,#f5eee2);border-color:#e2d8c9}.ws-metric strong{font-family:Georgia,"Times New Roman",serif}
+.ws-panels .card{min-height:170px}.ws-item{background:#f1eadf;border:1px solid #e4d9c9}
+.ws-kicker{letter-spacing:1.8px;font-weight:800;color:#9a7545}
+@media(max-width:850px){header{position:static}.hero{padding-top:55px;min-height:auto}.hero-card{transform:none}.hero:before{display:none}.workspace-main{padding:23px}.portal-card{padding:26px}}
+</style>
 </head>
 <body><div id="app">
 <header><div class="wrap"><nav><a class="brand-wrap" href="#top"><span class="mark"></span><span><span class="brand">LAJVIORA</span><span class="brand-sub">By the blessings of Late Lajwanti Chawla ♡</span></span></a><div class="links"><a href="#creators">Creators</a><a href="#brands">Brands</a><a href="#how">How it works</a></div><a class="navcta" href="javascript:void(0)" onclick="openPortal('auth')">Sign in / Sign up</a></nav></div></header>
@@ -367,7 +413,7 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
   }
   window.googleDemo=async function(){
     if(!client){alert('Authentication is still loading.');return}
-    const r=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:SITE,queryParams:{prompt:'select_account'}}});
+    const r=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:SITE,skipBrowserRedirect:true,queryParams:{prompt:'select_account'}}});
     if(r.error)alert('Google sign-in error: '+r.error.message);
     else if(r.data?.url)location.assign(r.data.url);
   };
@@ -416,22 +462,40 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
   };
   window.logout=async function(){await client.auth.signOut();localStorage.removeItem('lajvioraRole');open('auth')};
   async function boot(){
-    client=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce',storageKey:'lajviora_auth_pkce_v2'}});
-    const hash=location.hash;
-    if(hash.includes('access_token=')){
-      const p=new URLSearchParams(hash.slice(1));
-      const access=p.get('access_token'),refresh=p.get('refresh_token');
-      if(access&&refresh){
-        const s=await client.auth.setSession({access_token:access,refresh_token:refresh});
+    client=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,flowType:'pkce',storageKey:'lajviora_auth_pkce_v2'}});
+    try{
+      const url=new URL(location.href);
+      const oauthError=url.searchParams.get('error_description')||url.searchParams.get('error');
+      if(oauthError){
         history.replaceState({},document.title,SITE);
-        if(s.error){alert('Google sign-in error: '+s.error.message);return}
-        await route(s.data.session);
+        open('auth');
+        alert('Google sign-in error: '+decodeURIComponent(oauthError.replace(/\+/g,' ')));
         return;
       }
+      const code=url.searchParams.get('code');
+      if(code){
+        const exchanged=await client.auth.exchangeCodeForSession(code);
+        history.replaceState({},document.title,SITE);
+        if(exchanged.error){
+          open('auth');
+          alert('Google sign-in error: '+(exchanged.error.message||'Could not complete the Google sign-in.'));
+          return;
+        }
+        await route(exchanged.data.session);
+        return;
+      }
+      const s=await client.auth.getSession();
+      if(s.data?.session)await route(s.data.session.user);
+      client.auth.onAuthStateChange(async(event,session)=>{
+        if(event==='SIGNED_IN'&&session)await route(session.user);
+        if(event==='SIGNED_OUT')open('auth');
+      });
+    }catch(e){
+      console.error('LAJVIORA OAuth callback:',e);
+      history.replaceState({},document.title,SITE);
+      open('auth');
+      alert('Google sign-in could not be completed. Please try again.');
     }
-    const s=await client.auth.getSession();
-    if(s.data?.session)await route(s.data.session);
-    client.auth.onAuthStateChange(async(event,session)=>{if(event==='SIGNED_IN'&&session)await route(session);if(event==='SIGNED_OUT')open('auth')});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
