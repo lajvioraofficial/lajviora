@@ -215,7 +215,7 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
     if(!name||!email||password.length<6){alert('Please complete your name, email and a 6+ character password.');return}
     const r=await client.auth.signUp({email,password,options:{data:{full_name:name},emailRedirectTo:SITE}});
     if(r.error){console.error(r.error);alert('Supabase sign-up error: '+r.error.message);return}
-    if(r.data?.session)await afterLogin(r.data.session.user);else{alert('Account created. Please confirm your email, then sign in.');go('login')}
+    if(r.data?.session)await afterLogin(r.data.session.user);else{alert('Account created, but email confirmation is enabled in Supabase. Turn off email confirmation in Authentication settings to continue directly to account type.');go('login')}
   };
   window.signInDemo=async function(){
     if(!client){alert('Authentication is still loading.');return}
@@ -323,6 +323,113 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
       if(again.data?.session)await route(again.data.session);
       history.replaceState({},document.title,SITE);
     }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
+<script>
+/* Final LAJVIORA Google OAuth callback. */
+(function(){
+  const URL='https://rixawxkhxqodjfozztzl.supabase.co';
+  const KEY='sb_publishable_OSfiIkgy8XUcmVhnEDbOOA_dXEtjF7Z';
+  const SITE='https://lajvioraofficial.github.io/lajviora/';
+  let client=null;
+  const $=id=>document.getElementById(id);
+  function open(step){
+    const top=$('top'),portal=$('portalPage'),foot=document.querySelector('footer');
+    if(top)top.style.display='none';
+    if(foot)foot.style.display='none';
+    if(portal)portal.style.display='block';
+    document.querySelectorAll('.portal-step').forEach(x=>x.style.display='none');
+    const el=step==='auth'?$ ('portalAuth'):$ (step)||$ ('portal'+step.charAt(0).toUpperCase()+step.slice(1));
+    if(el)el.style.display='block';
+    window.scrollTo(0,0);
+  }
+  window.showPortal=open;
+  window.openPortal=open;
+  async function route(session){
+    if(!session?.user)return;
+    try{
+      const r=await client.from('profiles').select('id,role,display_name').eq('id',session.user.id).maybeSingle();
+      if(r.error){console.error(r.error);open('auth');return}
+      if(r.data?.role){
+        localStorage.setItem('lajvioraRole',r.data.role);
+        if(window.renderWorkspace)await window.renderWorkspace(r.data.role);
+        open(r.data.role==='creator'?'creatorWorkspace':'brandWorkspace');
+      }else{
+        localStorage.setItem('lajvioraGoogleEmail',session.user.email||'');
+        localStorage.setItem('lajvioraGoogleName',session.user.user_metadata?.full_name||session.user.user_metadata?.name||'');
+        open('role');
+      }
+    }catch(e){console.error(e);open('auth');alert('Google account was authenticated, but LAJVIORA could not load the profile.')}
+  }
+  window.googleDemo=async function(){
+    if(!client){alert('Authentication is still loading.');return}
+    const r=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:SITE,queryParams:{prompt:'select_account'}}});
+    if(r.error)alert('Google sign-in error: '+r.error.message);
+    else if(r.data?.url)location.assign(r.data.url);
+  };
+  window.signInDemo=async function(){
+    if(!client){alert('Authentication is still loading.');return}
+    const email=(($ ('loginEmail')||{}).value||'').trim().toLowerCase();
+    const password=(($ ('loginPassword')||{}).value||'').trim();
+    if(!email||!password){alert('Enter your email and password.');return}
+    const r=await client.auth.signInWithPassword({email,password});
+    if(r.error){alert(r.error.message);return}
+    await route(r.data.session);
+  };
+  window.nextRole=async function(){
+    if(!client){alert('Authentication is still loading.');return}
+    const name=(($ ('signupName')||{}).value||'').trim();
+    const email=(($ ('signupEmail')||{}).value||'').trim().toLowerCase();
+    const password=(($ ('signupPassword')||{}).value||'').trim();
+    if(!name||!email||password.length<6){alert('Please complete your name, email and a 6+ character password.');return}
+    const r=await client.auth.signUp({email,password,options:{data:{full_name:name},emailRedirectTo:SITE}});
+    if(r.error){alert(r.error.message);return}
+    if(r.data?.session)await route(r.data.session);
+    else{alert('Account created. Please confirm your email, then sign in.');open('login')}
+  };
+  window.chooseRole=async function(role){
+    const u=(await client.auth.getUser()).data?.user;
+    if(!u){alert('Please sign in first.');open('login');return}
+    localStorage.setItem('lajvioraRole',role);
+    open(role==='creator'?'creator':'brand');
+  };
+  window.enterWorkspace=async function(role){
+    const u=(await client.auth.getUser()).data?.user;
+    if(!u){alert('Please sign in first.');open('login');return}
+    const v=id=>(($ (id)||{}).value||'').trim();
+    const ids=role==='creator'?['cDisplay','cNiche','cSocial','cFollowers','cReach','cAudience','cType','cRate','cPortfolio']:['bName','bIndustry','bWebsite','bContact','bBudget','bNiche','bReach','bGoal','bBrief'];
+    if(ids.some(id=>!v(id))){alert('Please complete all profile details before entering the dashboard.');return}
+    let r=await client.from('profiles').upsert({id:u.id,role,display_name:role==='creator'?v('cDisplay'):v('bName'),updated_at:new Date().toISOString()});
+    if(r.error){alert(r.error.message);return}
+    const payload=role==='creator'
+      ?{user_id:u.id,niche:v('cNiche'),social_url:v('cSocial'),followers:Number(v('cFollowers').replace(/[^0-9.]/g,''))||0,average_reach:Number(v('cReach').replace(/[^0-9.]/g,''))||0,audience_location:v('cAudience'),collaboration_type:v('cType'),typical_rate:v('cRate'),portfolio:v('cPortfolio'),updated_at:new Date().toISOString()}
+      :{user_id:u.id,brand_name:v('bName'),industry:v('bIndustry'),website_or_social:v('bWebsite'),contact_name:v('bContact'),typical_budget:v('bBudget'),creator_niche:v('bNiche'),preferred_creator_reach:v('bReach'),campaign_goal:v('bGoal'),campaign_brief:v('bBrief'),updated_at:new Date().toISOString()};
+    r=await client.from(role==='creator'?'creator_profiles':'brand_profiles').upsert(payload);
+    if(r.error){alert(r.error.message);return}
+    localStorage.setItem('lajvioraRole',role);
+    await window.renderWorkspace(role);
+    open(role==='creator'?'creatorWorkspace':'brandWorkspace');
+  };
+  window.logout=async function(){await client.auth.signOut();localStorage.removeItem('lajvioraRole');open('auth')};
+  async function boot(){
+    client=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}});
+    const hash=location.hash;
+    if(hash.includes('access_token=')){
+      const p=new URLSearchParams(hash.slice(1));
+      const access=p.get('access_token'),refresh=p.get('refresh_token');
+      if(access&&refresh){
+        const s=await client.auth.setSession({access_token:access,refresh_token:refresh});
+        history.replaceState({},document.title,SITE);
+        if(s.error){alert('Google sign-in error: '+s.error.message);return}
+        await route(s.data.session);
+        return;
+      }
+    }
+    const s=await client.auth.getSession();
+    if(s.data?.session)await route(s.data.session);
+    client.auth.onAuthStateChange(async(event,session)=>{if(event==='SIGNED_IN'&&session)await route(session);if(event==='SIGNED_OUT')open('auth')});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
