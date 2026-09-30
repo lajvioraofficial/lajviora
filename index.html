@@ -188,4 +188,81 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
   sb.auth.onAuthStateChange(async(event,session)=>{if(event==='SIGNED_IN'&&session)await route(session.user);if(event==='SIGNED_OUT')show('auth')});
 })();
 </script>
+<script>
+/* LAJVIORA final auth override: one real Supabase flow, no demo Google UI. */
+(function(){
+  const URL='https://rixawxkhxqodjfozztzl.supabase.co';
+  const KEY='sb_publishable_Cip9g0w8I5ZtTWQxxrkqg_ubduOJ4F';
+  const SITE='https://lajvioraofficial.github.io/lajviora/';
+  let client=null;
+  const $=id=>document.getElementById(id);
+  const value=id=>(($ (id)||{}).value||'').trim();
+  const go=step=>window.showPortal&&window.showPortal(step);
+  async function sessionUser(){const r=await client.auth.getUser();return r.data?.user||null}
+  async function userProfile(uid){const r=await client.from('profiles').select('id,role,display_name').eq('id',uid).maybeSingle();if(r.error)throw r.error;return r.data}
+  async function afterLogin(user){
+    if(!user)return;
+    try{
+      const p=await userProfile(user.id);
+      if(p?.role){localStorage.setItem('lajvioraRole',p.role);await window.renderWorkspace(p.role);go(p.role==='creator'?'creatorWorkspace':'brandWorkspace');}
+      else{localStorage.setItem('lajvioraGoogleEmail',user.email||'');localStorage.setItem('lajvioraGoogleName',user.user_metadata?.full_name||user.user_metadata?.name||'');go('role');}
+    }catch(e){console.error('LAJVIORA profile routing:',e);alert('Authentication worked, but LAJVIORA could not load your profile: '+(e.message||e));}
+  }
+  function stripOAuthParams(){history.replaceState({},document.title,SITE)}
+  window.nextRole=async function(){
+    if(!client){alert('Authentication is still loading.');return}
+    const name=value('signupName'),email=value('signupEmail').toLowerCase(),password=value('signupPassword');
+    if(!name||!email||password.length<6){alert('Please complete your name, email and a 6+ character password.');return}
+    const r=await client.auth.signUp({email,password,options:{data:{full_name:name},emailRedirectTo:SITE}});
+    if(r.error){console.error(r.error);alert('Supabase sign-up error: '+r.error.message);return}
+    if(r.data?.session)await afterLogin(r.data.session.user);else{alert('Account created. Please confirm your email, then sign in.');go('login')}
+  };
+  window.signInDemo=async function(){
+    if(!client){alert('Authentication is still loading.');return}
+    const email=value('loginEmail').toLowerCase(),password=value('loginPassword');
+    if(!email||!password){alert('Enter your email and password.');return}
+    const r=await client.auth.signInWithPassword({email,password});
+    if(r.error){console.error(r.error);alert('Supabase sign-in error: '+r.error.message);return}
+    await afterLogin(r.data.user);
+  };
+  window.googleDemo=async function(){
+    if(!client){alert('Authentication is still loading.');return}
+    document.querySelectorAll('.google-picker').forEach(x=>x.remove());
+    const r=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:SITE,queryParams:{prompt:'select_account'}}});
+    if(r.error){console.error(r.error);alert('Google sign-in error: '+r.error.message)}
+  };
+  window.chooseRole=async function(role){
+    const u=await sessionUser();if(!u){alert('Please sign in first.');go('login');return}
+    localStorage.setItem('lajvioraRole',role);
+    const n=u.user_metadata?.full_name||u.user_metadata?.name||'';
+    if(role==='creator'&&$('cDisplay')&&!$('cDisplay').value)$('cDisplay').value=n;
+    if(role==='brand'&&$('bContact')&&!$('bContact').value)$('bContact').value=n;
+    go(role==='creator'?'creator':'brand');
+  };
+  window.enterWorkspace=async function(role){
+    const u=await sessionUser();if(!u){alert('Please sign in first.');go('login');return}
+    const ids=role==='creator'?['cDisplay','cNiche','cSocial','cFollowers','cReach','cAudience','cType','cRate','cPortfolio']:['bName','bIndustry','bWebsite','bContact','bBudget','bNiche','bReach','bGoal','bBrief'];
+    if(ids.some(id=>!value(id))){alert('Please complete all profile details before entering the dashboard.');return}
+    const base={id:u.id,role,display_name:role==='creator'?value('cDisplay'):value('bName'),updated_at:new Date().toISOString()};
+    let r=await client.from('profiles').upsert(base);if(r.error){alert('Profile save error: '+r.error.message);return}
+    const payload=role==='creator'
+      ?{user_id:u.id,niche:value('cNiche'),social_url:value('cSocial'),followers:Number(String(value('cFollowers')).replace(/[^0-9.]/g,''))||0,average_reach:Number(String(value('cReach')).replace(/[^0-9.]/g,''))||0,audience_location:value('cAudience'),collaboration_type:value('cType'),typical_rate:value('cRate'),portfolio:value('cPortfolio'),updated_at:new Date().toISOString()}
+      :{user_id:u.id,brand_name:value('bName'),industry:value('bIndustry'),website_or_social:value('bWebsite'),contact_name:value('bContact'),typical_budget:value('bBudget'),creator_niche:value('bNiche'),preferred_creator_reach:value('bReach'),campaign_goal:value('bGoal'),campaign_brief:value('bBrief'),updated_at:new Date().toISOString()};
+    r=await client.from(role==='creator'?'creator_profiles':'brand_profiles').upsert(payload);if(r.error){alert('Profile save error: '+r.error.message);return}
+    localStorage.setItem('lajvioraRole',role);await window.renderWorkspace(role);go(role==='creator'?'creatorWorkspace':'brandWorkspace');
+  };
+  window.logout=async function(){await client.auth.signOut();localStorage.removeItem('lajvioraRole');go('auth')};
+  async function init(){
+    client=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}});
+    const url=new URL(location.href);
+    const err=url.searchParams.get('error_description')||url.searchParams.get('error');
+    if(err){stripOAuthParams();go('auth');alert('Google sign-in error: '+decodeURIComponent(err.replace(/\+/g,' ')));return}
+    const code=url.searchParams.get('code');
+    if(code){try{const ex=await client.auth.exchangeCodeForSession(code);stripOAuthParams();if(ex.error){alert('Google callback error: '+ex.error.message);return}if(ex.data?.session){await afterLogin(ex.data.session.user);return}}catch(e){console.error(e);stripOAuthParams();alert('Google callback error: '+(e.message||e));return}}
+    const s=await client.auth.getSession();if(s.data?.session)await afterLogin(s.data.session.user);
+    client.auth.onAuthStateChange(async(event,session)=>{if(event==='SIGNED_IN'&&session)await afterLogin(session.user);if(event==='SIGNED_OUT')go('auth')});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
 </div></body></html>
