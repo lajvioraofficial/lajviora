@@ -263,4 +263,68 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script>
+<script>
+/* Final browser auth bridge. */
+(function(){
+  const URL='https://rixawxkhxqodjfozztzl.supabase.co';
+  const KEY='sb_publishable_OSfiIkgy8XUcmVhnEDbOOA_dXEtjF7Z';
+  const SITE='https://lajvioraofficial.github.io/lajviora/';
+  let client;
+  const $=id=>document.getElementById(id);
+  const value=id=>(($ (id)||{}).value||'').trim();
+  const cleanUrl=()=>history.replaceState({},document.title,SITE);
+  const go=step=>{const top=$('top'),portal=$('portalPage'),foot=document.querySelector('footer');if(top)top.style.display='none';if(foot)foot.style.display='none';if(portal)portal.style.display='block';document.querySelectorAll('.portal-step').forEach(x=>x.style.display='none');const el=step==='auth'?$('portalAuth'):$(step)||$('portal'+step.charAt(0).toUpperCase()+step.slice(1));if(el)el.style.display='block';window.scrollTo(0,0)};
+  async function route(session){
+    if(!session?.user)return;
+    try{
+      const r=await client.from('profiles').select('id,role,display_name').eq('id',session.user.id).maybeSingle();
+      if(r.error){console.error('Profile lookup:',r.error);go('auth');return}
+      if(r.data?.role){
+        localStorage.setItem('lajvioraRole',r.data.role);
+        if(typeof window.renderWorkspace==='function')await window.renderWorkspace(r.data.role);
+        go(r.data.role==='creator'?'creatorWorkspace':'brandWorkspace');
+      }else{
+        localStorage.setItem('lajvioraGoogleEmail',session.user.email||'');
+        localStorage.setItem('lajvioraGoogleName',session.user.user_metadata?.full_name||session.user.user_metadata?.name||'');
+        const input=$('cDisplay');if(input&&!input.value)input.value=session.user.user_metadata?.full_name||session.user.user_metadata?.name||'';
+        go('role');
+      }
+    }catch(e){console.error('LAJVIORA auth routing:',e);go('auth');alert('Signed in, but your LAJVIORA profile could not be loaded.');}
+  }
+  window.googleDemo=async function(){
+    try{
+      const r=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:SITE,queryParams:{prompt:'select_account'}}});
+      if(r.error)throw r.error;
+      if(r.data?.url)window.location.assign(r.data.url);
+    }catch(e){console.error('Google OAuth:',e);alert('Google sign-in error: '+(e.message||e));}
+  };
+  window.signInDemo=async function(){
+    const email=value('loginEmail').toLowerCase(),password=value('loginPassword');
+    if(!email||!password){alert('Enter your email and password.');return}
+    const r=await client.auth.signInWithPassword({email,password});
+    if(r.error){alert(r.error.message);return}
+    await route(r.data.session);
+  };
+  window.nextRole=async function(){
+    const name=value('signupName'),email=value('signupEmail').toLowerCase(),password=value('signupPassword');
+    if(!name||!email||password.length<6){alert('Please complete your name, email and a 6+ character password.');return}
+    const r=await client.auth.signUp({email,password,options:{data:{full_name:name},emailRedirectTo:SITE}});
+    if(r.error){alert(r.error.message);return}
+    if(r.data?.session)await route(r.data.session);else{alert('Account created. Please confirm your email, then sign in.');go('login')}
+  };
+  async function boot(){
+    client=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}});
+    client.auth.onAuthStateChange(async(event,session)=>{if(event==='SIGNED_IN'&&session)await route(session);if(event==='SIGNED_OUT')go('auth')});
+    const s=await client.auth.getSession();
+    if(s.data?.session){await route(s.data.session);return}
+    const hash=location.hash;
+    if(hash.includes('access_token=')){
+      const again=await client.auth.getSession();
+      if(again.data?.session)await route(again.data.session);
+      history.replaceState({},document.title,SITE);
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
 </div></body></html>
