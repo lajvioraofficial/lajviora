@@ -413,9 +413,10 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
   }
   window.googleDemo=async function(){
     if(!client){alert('Authentication is still loading.');return}
-    const r=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:SITE,skipBrowserRedirect:true,queryParams:{prompt:'select_account'}}});
-    if(r.error)alert('Google sign-in error: '+r.error.message);
-    else if(r.data?.url)location.assign(r.data.url);
+    try{
+      const r=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:SITE}});
+      if(r.error)alert('Google sign-in error: '+r.error.message);
+    }catch(e){console.error('Google OAuth start:',e);alert('Google sign-in error: '+(e.message||e))}
   };
   window.signInDemo=async function(){
     if(!client){alert('Authentication is still loading.');return}
@@ -462,7 +463,7 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
   };
   window.logout=async function(){await client.auth.signOut();localStorage.removeItem('lajvioraRole');open('auth')};
   async function boot(){
-    client=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,flowType:'pkce',storageKey:'lajviora_auth_pkce_v2'}});
+    client=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit',storageKey:'lajviora_google_implicit_v1'}});
     try{
       const url=new URL(location.href);
       const oauthError=url.searchParams.get('error_description')||url.searchParams.get('error');
@@ -470,18 +471,6 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
         history.replaceState({},document.title,SITE);
         open('auth');
         alert('Google sign-in error: '+decodeURIComponent(oauthError.replace(/\+/g,' ')));
-        return;
-      }
-      const code=url.searchParams.get('code');
-      if(code){
-        const exchanged=await client.auth.exchangeCodeForSession(code);
-        history.replaceState({},document.title,SITE);
-        if(exchanged.error){
-          open('auth');
-          alert('Google sign-in error: '+(exchanged.error.message||'Could not complete the Google sign-in.'));
-          return;
-        }
-        await route(exchanged.data.session);
         return;
       }
       const s=await client.auth.getSession();
