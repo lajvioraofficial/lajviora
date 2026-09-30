@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>LAJVIORA — Small creators. Real opportunities.</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S4W1J499TK"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments)}
+gtag('js',new Date());
+gtag('config','G-S4W1J499TK');
+</script>
 <style>
 :root{color-scheme:light;--bg:#fbfaf6;--surface:#fffefb;--surface2:#f7f0e3;--text:#211f1b;--muted:#777168;--line:#e9e1d4;--accent:#9a7540;--accent2:#d5b477;--dark:#211f1b;--shadow:0 22px 60px rgba(91,70,37,.10)}
 @media(prefers-color-scheme:dark){:root{--bg:#100d15;--surface:#18141e;--surface2:#211b2d;--text:#f7f4fb;--muted:#aaa3b3;--line:#302a38;--dark:#fff}}
@@ -539,6 +546,7 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
     const name=val('signupName'),email=val('signupEmail').toLowerCase(),password=val('signupPassword');
     if(!name||!email||password.length<6){alert('Please complete your name, email and a 6+ character password.');return}
     const r=await authClient.auth.signUp({email,password,options:{data:{full_name:name,product:'LAJVIORA'},emailRedirectTo:SITE}});
+    if(typeof window.gtag==='function')window.gtag('event','sign_up',{method:'email'});
     if(r.error){alert('Account creation failed: '+r.error.message);return}
     if(r.data?.session){toast('Account created','Your real LAJVIORA account is active. Choose Creator or Brand.');show('role')}
     else{toast('Check your email','Your account was created. Confirm your email, then sign in to finish setup.');show('login')}
