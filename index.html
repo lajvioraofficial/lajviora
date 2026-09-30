@@ -414,7 +414,7 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
   };
   window.logout=async function(){await client.auth.signOut();localStorage.removeItem('lajvioraRole');open('auth')};
   async function boot(){
-    client=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,flowType:'implicit'}});
+    client=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce',storageKey:'lajviora_auth_pkce_v2'}});
     const hash=location.hash;
     if(hash.includes('access_token=')){
       const p=new URLSearchParams(hash.slice(1));
