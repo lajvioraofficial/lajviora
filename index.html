@@ -484,7 +484,7 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
       console.error('LAJVIORA OAuth callback:',e);
       history.replaceState({},document.title,SITE);
       open('auth');
-      alert('Google sign-in could not be completed. Please try again.');
+      console.error('LAJVIORA OAuth callback failed:',e&&e.message?e.message:e);
     }
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
