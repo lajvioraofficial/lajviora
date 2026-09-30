@@ -493,4 +493,148 @@ const brandScreen=document.getElementById('portalBrand');if(brandScreen){const b
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 </script>
+<script>
+/* LAJVIORA production email-account flow: one final controller owns signup, login and profiles. */
+(function(){
+  const URL='https://rixawxkhxqodjfozztzl.supabase.co';
+  const KEY='sb_publishable_OSfiIkgy8XUcmVhnEDbOOA_dXEtjF7Z';
+  const SITE=window.location.origin+window.location.pathname;
+  const authClient=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:'lajviora_real_email_v2'}});
+  const $=id=>document.getElementById(id);
+  const val=id=>(($ (id)||{}).value||'').trim();
+  const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const num=s=>Number(String(s||'').replace(/[^0-9.]/g,''))||0;
+
+  function show(step){
+    const top=$('top'),portal=$('portalPage'),foot=document.querySelector('footer');
+    if(top)top.style.display='none';if(foot)foot.style.display='none';if(portal)portal.style.display='block';
+    document.querySelectorAll('.portal-step').forEach(x=>x.style.display='none');
+    const el=$('portal'+String(step).charAt(0).toUpperCase()+String(step).slice(1))||$(step)||$('portalAuth');
+    if(el)el.style.display='block';
+    window.scrollTo(0,0);
+  }
+  function backHome(){const top=$('top'),portal=$('portalPage'),foot=document.querySelector('footer');if(portal)portal.style.display='none';if(top)top.style.display='block';if(foot)foot.style.display='block';window.scrollTo(0,0)}
+  window.showPortal=show;window.openPortal=show;window.backHome=backHome;
+
+  async function currentUser(){const r=await authClient.auth.getUser();return r.data?.user||null}
+  async function getProfile(uid){const r=await authClient.from('profiles').select('id,role,display_name').eq('id',uid).maybeSingle();if(r.error)throw r.error;return r.data}
+  async function getRoleData(role,uid){const r=await authClient.from(role==='creator'?'creator_profiles':'brand_profiles').select('*').eq('user_id',uid).maybeSingle();if(r.error)throw r.error;return r.data||{}}
+  async function countRows(table,column,value){let q=authClient.from(table).select('id',{count:'exact',head:true});if(column)q=q.eq(column,value);const r=await q;return r.error?0:(r.count||0)}
+
+  function toast(title,message){
+    document.querySelectorAll('.account-toast').forEach(x=>x.remove());
+    const e=document.createElement('div');e.className='account-toast';e.innerHTML='<strong>'+esc(title)+'</strong>'+esc(message);document.body.appendChild(e);setTimeout(()=>e.remove(),6500);
+  }
+
+  async function route(user){
+    if(!user)return;
+    try{
+      const p=await getProfile(user.id);
+      if(p?.role){localStorage.setItem('lajvioraRole',p.role);await renderWorkspace(p.role);show(p.role==='creator'?'creatorWorkspace':'brandWorkspace');}
+      else show('role');
+    }catch(e){console.error('LAJVIORA route',e);toast('Signed in','Your account is active. Complete your LAJVIORA profile to continue.');show('role')}
+  }
+
+  window.nextRole=async function(){
+    const name=val('signupName'),email=val('signupEmail').toLowerCase(),password=val('signupPassword');
+    if(!name||!email||password.length<6){alert('Please complete your name, email and a 6+ character password.');return}
+    const r=await authClient.auth.signUp({email,password,options:{data:{full_name:name,product:'LAJVIORA'},emailRedirectTo:SITE}});
+    if(r.error){alert('Account creation failed: '+r.error.message);return}
+    if(r.data?.session){toast('Account created','Your real LAJVIORA account is active. Choose Creator or Brand.');show('role')}
+    else{toast('Check your email','Your account was created. Confirm your email, then sign in to finish setup.');show('login')}
+  };
+
+  window.signInDemo=async function(){
+    const email=val('loginEmail').toLowerCase(),password=val('loginPassword');
+    if(!email||!password){alert('Enter your email and password.');return}
+    const r=await authClient.auth.signInWithPassword({email,password});
+    if(r.error){alert('Sign in failed: '+r.error.message);return}
+    await route(r.data.user);
+  };
+
+  window.chooseRole=async function(role){
+    const u=await currentUser();
+    if(!u){alert('Please sign in first.');show('login');return}
+    localStorage.setItem('lajvioraRole',role);
+    const n=u.user_metadata?.full_name||'';
+    if(role==='creator'&&$('cDisplay')&&!$('cDisplay').value)$('cDisplay').value=n;
+    if(role==='brand'&&$('bContact')&&!$('bContact').value)$('bContact').value=n;
+    show(role==='creator'?'creator':'brand');
+  };
+
+  window.enterWorkspace=async function(role){
+    const u=await currentUser();
+    if(!u){alert('Please sign in first.');show('login');return}
+    const ids=role==='creator'
+      ?['cDisplay','cNiche','cSocial','cFollowers','cReach','cAudience','cType','cRate','cPortfolio']
+      :['bName','bIndustry','bWebsite','bContact','bBudget','bNiche','bReach','bGoal','bBrief'];
+    if(ids.some(id=>!val(id))){alert('Please complete every profile question before entering your workspace.');return}
+    let r=await authClient.from('profiles').upsert({id:u.id,role,display_name:role==='creator'?val('cDisplay'):val('bName'),updated_at:new Date().toISOString()});
+    if(r.error){alert('Profile save failed: '+r.error.message);return}
+    const payload=role==='creator'
+      ?{user_id:u.id,niche:val('cNiche'),social_url:val('cSocial'),followers:num(val('cFollowers')),average_reach:num(val('cReach')),audience_location:val('cAudience'),collaboration_type:val('cType'),typical_rate:val('cRate'),portfolio:val('cPortfolio'),updated_at:new Date().toISOString()}
+      :{user_id:u.id,brand_name:val('bName'),industry:val('bIndustry'),website_or_social:val('bWebsite'),contact_name:val('bContact'),typical_budget:val('bBudget'),creator_niche:val('bNiche'),preferred_creator_reach:val('bReach'),campaign_goal:val('bGoal'),campaign_brief:val('bBrief'),updated_at:new Date().toISOString()};
+    r=await authClient.from(role==='creator'?'creator_profiles':'brand_profiles').upsert(payload);
+    if(r.error){alert('Profile save failed: '+r.error.message);return}
+    localStorage.setItem('lajvioraRole',role);
+    await renderWorkspace(role);show(role==='creator'?'creatorWorkspace':'brandWorkspace');
+    toast('Profile saved','Your account and profile are now stored in LAJVIORA.');
+  };
+
+  window.logout=async function(){await authClient.auth.signOut();localStorage.removeItem('lajvioraRole');show('auth')};
+
+  function addContact(){
+    const footer=document.querySelector('footer .wrap');
+    if(footer&&!footer.querySelector('.contact-live'))footer.insertAdjacentHTML('beforeend','<span class="contact-live">Contact · <a href="mailto:lajvioraofficial@gmail.com">lajvioraofficial@gmail.com</a></span>');
+    const cards=document.querySelectorAll('.portal-card');
+    cards.forEach(card=>{if(!card.querySelector('.contact-panel'))card.insertAdjacentHTML('beforeend','<div class="contact-panel"><div><strong>Need help?</strong><div style="color:var(--muted);margin-top:4px">LAJVIORA support</div></div><a href="mailto:lajvioraofficial@gmail.com?subject=LAJVIORA%20Support">lajvioraofficial@gmail.com →</a></div>')});
+  }
+
+  async function renderWorkspace(role){
+    const user=await currentUser();if(!user)return;
+    const el=$(role==='creator'?'creatorWorkspace':'brandWorkspace');if(!el)return;
+    const tabs=role==='creator'?['overview','profile','matches','applications','messages','analytics','settings']:['overview','campaigns','creators','shortlist','applications','messages','analytics','settings'];
+    const labels={overview:'Overview',profile:'My Profile',matches:'Matches',applications:'Applications',messages:'Messages',analytics:'Analytics',settings:'Settings',campaigns:'Campaigns',creators:'Find Creators',shortlist:'Shortlist'};
+    const nav=tabs.map(t=>'<button class="ws-btn" data-tab="'+t+'">'+labels[t]+'</button>').join('');
+    el.innerHTML='<div class="workspace"><aside class="workspace-side"><div class="ws-title">LAJVIORA</div><div class="ws-label">'+(role==='creator'?'CREATOR WORKSPACE':'BRAND WORKSPACE')+'</div>'+nav+'<button class="ws-btn" style="margin-top:35px" onclick="logout()">Log out</button><div style="padding:18px 12px 0;color:#aaa49b;font-size:10px;line-height:1.6">Support<br><a style="color:#e5cc9e" href="mailto:lajvioraofficial@gmail.com">lajvioraofficial@gmail.com</a></div></aside><div class="workspace-main" id="'+role+'Main"></div></div>';
+    el.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>wsTab(role,b.dataset.tab,b)));
+    await wsTab(role,'overview',el.querySelector('[data-tab="overview"]'));
+  }
+  window.renderWorkspace=renderWorkspace;
+
+  window.wsTab=async function(role,tab,button){
+    const user=await currentUser();if(!user)return;
+    const d=await getRoleData(role,user.id);const main=$(role+'Main');if(!main)return;
+    const titles={overview:role==='creator'?'Creator overview':'Brand overview',profile:'Your profile',matches:'Live matches',applications:'Live applications',messages:'Live messages',analytics:'Live analytics',settings:'Account settings',campaigns:'Live campaigns',creators:'Find creators',shortlist:'Live shortlist'};
+    let metrics=[];
+    if(role==='creator'){
+      const [m,a,s]=await Promise.all([countRows('matches','creator_id',user.id),countRows('applications','creator_id',user.id),countRows('social_connections','user_id',user.id)]);
+      metrics=['Live matches · '+m,'Applications · '+a,'Followers entered · '+num(d.followers).toLocaleString(),'Social connections · '+s];
+    }else{
+      const c=await countRows('campaigns','brand_id',user.id);
+      metrics=['Live campaigns · '+c,'Creator matches · 0','Shortlisted · 0','Applications · 0'];
+    }
+    main.innerHTML='<div class="ws-kicker">LIVE DATA</div><h2 style="font-size:34px;margin:8px 0 7px">'+(titles[tab]||titles.overview)+'</h2><p style="color:var(--muted);line-height:1.7;margin:0;max-width:780px">Only authenticated Supabase records are shown. No fake accounts, sample creator metrics or invented matches are used.</p><div class="ws-metrics">'+metrics.map(x=>'<div class="card ws-metric"><small>DATABASE</small><strong>'+esc(x)+'</strong></div>').join('')+'</div><div class="ws-panels"><div class="card"><strong>Account status</strong><div class="ws-list" style="margin-top:14px"><div class="ws-item">Email · '+esc(user.email||'')+'</div><div class="ws-item">Role · '+(role==='creator'?'Creator':'Brand')+'</div><div class="ws-item">Authentication · Supabase</div></div></div><div class="card"><strong>Verified social data</strong><p style="color:var(--muted);line-height:1.7;margin-bottom:0">Reach, views and engagement remain <b>0</b> until an official supported social platform is connected and authorized.</p></div></div><div class="contact-panel"><div><strong>LAJVIORA Support</strong><div style="color:var(--muted);margin-top:4px">Questions about your account or collaboration?</div></div><a href="mailto:lajvioraofficial@gmail.com?subject=LAJVIORA%20Support">lajvioraofficial@gmail.com →</a></div>';
+    const root=$(role==='creator'?'creatorWorkspace':'brandWorkspace');root.querySelectorAll('.ws-btn').forEach(x=>x.classList.remove('active'));if(button)button.classList.add('active');
+  };
+
+  function enhanceForms(){
+    const c=$('portalCreator'),b=$('portalBrand');
+    if(c&&!c.querySelector('.form-progress'))c.querySelector('.portal-card').insertAdjacentHTML('afterbegin','<div class="form-progress"><span>01 ACCOUNT</span><i></i><span>02 ROLE</span><i></i><span>03 CREATOR</span></div>');
+    if(b&&!b.querySelector('.form-progress'))b.querySelector('.portal-card').insertAdjacentHTML('afterbegin','<div class="form-progress"><span>01 ACCOUNT</span><i></i><span>02 ROLE</span><i></i><span>03 BRAND</span></div>');
+    if(c)c.querySelector('p').textContent='Tell us about your content, audience, platforms and collaboration preferences so brands can understand your fit.';
+    if(b)b.querySelector('p').textContent='Tell us about your business, creator requirements, budget and campaign goals so discovery starts with a clear brief.';
+    addContact();
+    document.querySelectorAll('button[onclick="googleDemo()"],.divider,.small-note').forEach(x=>x.remove());
+  }
+
+  async function init(){
+    enhanceForms();
+    const hero=document.querySelector('.hero-card .dash');if(hero)hero.innerHTML='<div class="dash-top"><strong>Live platform data</strong><span class="mini">No demo metrics</span></div><div class="campaign" style="padding:28px;text-align:center"><div class="pill">LIVE MODE</div><h3 style="font-size:19px;margin:13px 0 7px">Real campaigns will appear here.</h3><p>No sample campaigns, creator metrics or matches are shown.</p></div>';
+    const r=await authClient.auth.getSession();if(r.data?.session)await route(r.data.session.user);
+    authClient.auth.onAuthStateChange(async(event,session)=>{if(event==='SIGNED_IN'&&session)await route(session.user);if(event==='SIGNED_OUT')show('auth')});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
 </div></body></html>
